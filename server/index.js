@@ -9,6 +9,12 @@ app.use(express.json());
 app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(passport.initialize());
 
+//IMPORT ROUTES
+const authRoutes = require('./routes/auth')
+//INITIALIZE ROUTES
+app.use('/auth', authRoutes)
+
+
 // RUN SERVER
 const runApp = () => {
   try {
