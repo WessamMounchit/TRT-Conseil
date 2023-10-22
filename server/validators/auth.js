@@ -28,7 +28,7 @@ const emailExists = check("email").custom(async (value) => {
 });
 
 //ROLE VALIDATION
-const roleExists = check("role").custom(async (value, { req }) => {
+const roleValidation = check("role").custom(async (value, { req }) => {
   if (req.body.role) {
     const result = await db.query("SELECT id FROM roles WHERE id = $1", [
       value,
@@ -58,14 +58,10 @@ const loginFieldsCheck = check("email").custom(async (value, { req }) => {
     throw new Error("Mot de passe incorrect");
   }
 
-  if (user.rows[0].role !== req.body.role) {
-    throw new Error("Rôle incorrect");
-  }
-
   req.user = user.rows[0];
 });
 
 module.exports = {
-  registerValidation: [email, password, emailExists, roleExists],
+  registerValidation: [email, password, emailExists, roleValidation],
   loginValidation: [loginFieldsCheck],
 };

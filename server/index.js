@@ -9,10 +9,15 @@ app.use(express.json());
 app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(passport.initialize());
 
+//PASSPORT MIDDLEWARE
+require("./middlewares/passport-middleware");
+
 //IMPORT ROUTES
 const authRoutes = require('./routes/auth')
+const consultantRoutes = require('./routes/consultant')
 //INITIALIZE ROUTES
 app.use('/auth', authRoutes)
+app.use('/consultant', consultantRoutes)
 
 
 // RUN SERVER

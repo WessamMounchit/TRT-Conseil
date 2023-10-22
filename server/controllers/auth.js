@@ -32,18 +32,8 @@ exports.login = async (req, res) => {
   let payload = {
     id: user.id,
     email: user.email,
-  };
-
-  let role = null;
-
-  try {
-    const result = await db.query("select name from roles where id = $1", [
-      user.role_id,
-    ]);
-    role = result.rows[0];
-  } catch (error) {
-    console.error(error.message);
-  }
+    role: user.role_id
+   };
 
   try {
     const token = await sign(payload, SECRET);
@@ -51,7 +41,7 @@ exports.login = async (req, res) => {
     return res.status(200).json({
       success: true,
       info: "Connexion réalisée avec succès",
-      role: role.name,
+      role: user.role_id,
       token,
     });
   } catch (error) {
