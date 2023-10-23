@@ -1,7 +1,7 @@
 const db = require("../db");
 
 exports.applyToJob = async (req, res) => {
-  const { candidateId, jobId } = req.body;
+  const { candidateId, jobId } = req.params;
 
   try {
     const query =

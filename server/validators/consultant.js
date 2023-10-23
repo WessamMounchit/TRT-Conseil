@@ -14,8 +14,8 @@ const roleValidationConsultant = check("role").custom(
 
 //CHECK IF ACTIVE
 const checkIfActive = check("is_active").custom(async (value, { req }) => {
-  if (req.params.id) {
-    const accountId = req.params.id;
+  if (req.params.accountId) {
+    const { accountId } = req.params;
     const query = "SELECT is_active FROM users WHERE id = $1";
     const values = [accountId];
     const result = await db.query(query, values);
@@ -29,14 +29,16 @@ const checkIfActive = check("is_active").custom(async (value, { req }) => {
 //CHECK IF JOB OFFER
 const checkIfJobOfferApprouved = check("is_valid").custom(
   async (value, { req }) => {
-    const { jobId } = req.params;
+    if (req.params.jobId) {
+      const { jobId } = req.params;
 
-    const query = "SELECT is_valid FROM job_postings WHERE id = $1";
-    const values = [jobId];
-    const result = await db.query(query, values);
+      const query = "SELECT is_valid FROM job_postings WHERE id = $1";
+      const values = [jobId];
+      const result = await db.query(query, values);
 
-    if (result.rows[0].is_valid === true) {
-      throw new Error("Cette annonce est déjà validée");
+      if (result.rows[0].is_valid === true) {
+        throw new Error("Cette annonce est déjà validée");
+      }
     }
   }
 );

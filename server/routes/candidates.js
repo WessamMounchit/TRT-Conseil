@@ -8,7 +8,7 @@ const { candidateValidation } = require("../validators/candidate");
 const { applyToJob } = require("../controllers/candidate");
 
 router.post(
-  "/application",
+  "/application/:candidateId/:jobId",
   passport.authenticate("jwt", { session: false }),
   candidateValidation,
   validationMiddleware,
