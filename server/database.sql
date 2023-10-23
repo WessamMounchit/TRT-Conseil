@@ -5,7 +5,7 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role_id INTEGER NOT NULL,
-  is_active BOOLEAN DEFAULT false
+  is_active BOOLEAN DEFAULT false,
   FOREIGN KEY (role_id) REFERENCES Roles(id)
 );
 
@@ -22,6 +22,13 @@ CREATE TABLE candidates (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE recruiters (
+  user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  company_name VARCHAR(255),
+  address VARCHAR(255),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 CREATE TABLE job_postings (
   id SERIAL PRIMARY KEY,
   recruiter_id uuid DEFAULT uuid_generate_v4(),
@@ -29,7 +36,7 @@ CREATE TABLE job_postings (
   work_location VARCHAR(255),
   description TEXT,
   consultant_id uuid DEFAULT uuid_generate_v4(),
-  is_valid BOOLEAN,
+  is_valid BOOLEAN DEFAULT false,
   FOREIGN KEY (recruiter_id) REFERENCES recruiters(user_id),
   FOREIGN KEY (consultant_id) REFERENCES users(id)
 );

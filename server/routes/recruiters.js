@@ -2,18 +2,17 @@ const { Router } = require("express");
 const {
   validationMiddleware,
 } = require("../middlewares/validation-middleware");
-const {} = require("../validators/auth");
-const { approveAccount } = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
-const { consultantValidation } = require("../validators/consultant-validators");
+const { createJobOffer } = require("../controllers/recruiter");
+const { recruiterValidation } = require("../validators/recruiter");
 
 router.post(
-  "/approuve-account/:id",
+  "/create-job-offer",
   passport.authenticate("jwt", { session: false }),
-  consultantValidation,
+  recruiterValidation,
   validationMiddleware,
-  approveAccount
+  createJobOffer
 );
 
 module.exports = router;

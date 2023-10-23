@@ -9,10 +9,17 @@ exports.register = async (req, res) => {
   try {
     const hashedPassword = await hash(password, 10);
 
-    await db.query(
-      "INSERT INTO users(email, role_id, password) VALUES ($1, $2, $3)",
+    const result = await db.query(
+      "INSERT INTO users (email, role_id, password) VALUES ($1, $2, $3) RETURNING id",
       [email, role, hashedPassword]
     );
+
+    const id = result.rows[0].id;
+    if (role === 3) {
+      await db.query("INSERT INTO recruiters (user_id) VALUES ($1)", [id]);
+    } else if (role === 4) {
+      await db.query("INSERT INTO candidates (user_id) VALUES ($1)", [id]);
+    }
 
     return res.status(201).json({
       success: true,
@@ -32,8 +39,8 @@ exports.login = async (req, res) => {
   let payload = {
     id: user.id,
     email: user.email,
-    role: user.role_id
-   };
+    role: user.role_id,
+  };
 
   try {
     const token = await sign(payload, SECRET);
