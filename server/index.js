@@ -16,10 +16,12 @@ require("./middlewares/passport-middleware");
 const authRoutes = require('./routes/auth')
 const consultantsRoutes = require('./routes/consultants')
 const recruitersRoutes = require('./routes/recruiters')
+const adminRoutes = require('./routes/admin')
 //INITIALIZE ROUTES
 app.use('/auth', authRoutes)
 app.use('/consultants', consultantsRoutes)
 app.use('/recruiters', recruitersRoutes)
+app.use('/admin', adminRoutes)
 
 
 // RUN SERVER
