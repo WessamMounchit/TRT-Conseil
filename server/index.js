@@ -13,16 +13,17 @@ app.use(passport.initialize());
 require("./middlewares/passport-middleware");
 
 //IMPORT ROUTES
-const authRoutes = require('./routes/auth')
-const consultantsRoutes = require('./routes/consultants')
-const recruitersRoutes = require('./routes/recruiters')
-const adminRoutes = require('./routes/admin')
+const authRoutes = require("./routes/auth");
+const consultantsRoutes = require("./routes/consultants");
+const recruitersRoutes = require("./routes/recruiters");
+const adminRoutes = require("./routes/admin");
+const candidatesRoutes = require("./routes/candidates");
 //INITIALIZE ROUTES
-app.use('/auth', authRoutes)
-app.use('/consultants', consultantsRoutes)
-app.use('/recruiters', recruitersRoutes)
-app.use('/admin', adminRoutes)
-
+app.use("/auth", authRoutes);
+app.use("/consultants", consultantsRoutes);
+app.use("/recruiters", recruitersRoutes);
+app.use("/admin", adminRoutes);
+app.use("/candidates", candidatesRoutes);
 
 // RUN SERVER
 const runApp = () => {

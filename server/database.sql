@@ -35,7 +35,7 @@ CREATE TABLE job_postings (
   job_title VARCHAR(255),
   work_location VARCHAR(255),
   description TEXT,
-  consultant_id uuid DEFAULT uuid_generate_v4(),
+  consultant_id uuid DEFAULT NULL uuid_generate_v4(),
   is_valid BOOLEAN DEFAULT false,
   FOREIGN KEY (recruiter_id) REFERENCES recruiters(user_id),
   FOREIGN KEY (consultant_id) REFERENCES users(id)
@@ -44,8 +44,8 @@ CREATE TABLE job_postings (
 CREATE TABLE applications (
   candidate_id uuid DEFAULT uuid_generate_v4(),
   job_posting_id INTEGER,
-  consultant_id uuid DEFAULT uuid_generate_v4(),
-  is_valid BOOLEAN,
+  consultant_id uuid DEFAULT NULL uuid_generate_v4(),
+  is_valid BOOLEAN DEFAULT false,
   PRIMARY KEY (candidate_id, job_posting_id),
   FOREIGN KEY (candidate_id) REFERENCES candidates(user_id),
   FOREIGN KEY (job_posting_id) REFERENCES job_Postings(id),
