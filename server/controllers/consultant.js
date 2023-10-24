@@ -1,4 +1,6 @@
 const db = require("../db");
+const path = require("path");
+const { sendApprovalEmail } = require("../services/nodemailer");
 
 exports.approveAccount = async (req, res) => {
   const { accountId } = req.params;
@@ -35,17 +37,31 @@ exports.approveJobOffer = async (req, res) => {
 };
 
 exports.approveApplication = async (req, res) => {
-  const { candidateId, jobPostingId } = req.params;
+  const { candidateId, jobId } = req.params;
+  const consultantId = req.user.id;
 
   try {
-    const query =
-      "UPDATE applications SET is_valid = $1 WHERE candidate_id = $2 AND job_posting_id = $3";
-    const values = [true, candidateId, jobPostingId];
-    await db.query(query, values);
+    const updateQuery =
+      "UPDATE applications SET is_valid = $1, consultant_id = $2 WHERE candidate_id = $3 AND job_posting_id = $4";
+    const updateValues = [true, consultantId, candidateId, jobId];
+    await db.query(updateQuery, updateValues);
+
+    const selectQuery = `
+    SELECT c.first_name, c.last_name, c.cv, u.email
+    FROM candidates AS c
+    JOIN applications AS a ON a.candidate_id = c.user_id
+    JOIN job_postings AS j ON a.job_posting_id = j.id
+    JOIN users AS u ON j.recruiter_id = u.id
+    WHERE a.candidate_id = $1 AND a.job_posting_id = $2`;
+    const selectValues = [candidateId, jobId];
+    const result = await db.query(selectQuery, selectValues);
+    const { first_name, last_name, cv, email } = result.rows[0];
+
+    sendApprovalEmail(email, first_name, last_name, cv);
 
     return res
       .status(200)
-      .json({ message: "Candidature approuvée avec succès" });
+      .json({ message: "Candidature approuvée et mail envoyé avec succès" });
   } catch (error) {
     console.error(error);
     return res

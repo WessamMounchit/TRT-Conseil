@@ -5,7 +5,7 @@ const {
 const { approveAccount, approveJobOffer, approveApplication } = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
-const { consultantValidation } = require("../validators/consultant");
+const { consultantValidation, approuveApplicationValidation } = require("../validators/consultant");
 
 router.post(
   "/approuve-account/:accountId",
@@ -24,9 +24,9 @@ router.post(
 );
 
 router.post(
-  "/approuve-application/:candidateId/:jobPostingId",
+  "/approuve-application/:candidateId/:jobId",
   passport.authenticate("jwt", { session: false }),
-  consultantValidation,
+  approuveApplicationValidation,
   validationMiddleware,
   approveApplication
 );

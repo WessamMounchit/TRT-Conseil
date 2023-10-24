@@ -49,4 +49,5 @@ module.exports = {
     checkIfActive,
     checkIfJobOfferApprouved,
   ],
+  approuveApplicationValidation: [roleValidationConsultant],
 };
