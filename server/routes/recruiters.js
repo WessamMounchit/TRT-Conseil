@@ -4,7 +4,7 @@ const {
 } = require("../middlewares/validation-middleware");
 const router = Router();
 const passport = require("passport");
-const { createJobOffer, completeRecruiterProfile } = require("../controllers/recruiter");
+const { createJobOffer, completeRecruiterProfile, getActiveCandidatesApplying } = require("../controllers/recruiter");
 const { recruiterValidation } = require("../validators/recruiter");
 
 router.post(
@@ -21,6 +21,14 @@ router.post(
   recruiterValidation,
   validationMiddleware,
   completeRecruiterProfile
+);
+
+router.get(
+  "/get-candidates/:jobId",
+  passport.authenticate("jwt", { session: false }),
+  recruiterValidation,
+  validationMiddleware,
+  getActiveCandidatesApplying
 );
 
 

@@ -46,3 +46,29 @@ exports.completeRecruiterProfile = async (req, res) => {
       .json({ error: "Erreur lors de la complétion du profil" });
   }
 };
+
+exports.getActiveCandidatesApplying = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const query = `
+      SELECT c.*
+      FROM candidates c
+      JOIN users u ON c.user_id = u.id
+      JOIN applications a ON c.user_id = a.candidate_id
+      WHERE u.is_active = true AND a.job_posting_id = $1`;
+
+    const values = [jobId];
+    const result = await db.query(query, values);
+
+    return res.status(200).json({
+      message: "Candidats sélectionnés avec succès",
+      candidates: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des candidats" });
+  }
+};

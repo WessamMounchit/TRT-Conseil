@@ -43,16 +43,18 @@ exports.approveApplication = async (req, res) => {
   try {
     const updateQuery =
       "UPDATE applications SET is_valid = $1, consultant_id = $2 WHERE candidate_id = $3 AND job_posting_id = $4";
+
     const updateValues = [true, consultantId, candidateId, jobId];
     await db.query(updateQuery, updateValues);
 
     const selectQuery = `
     SELECT c.first_name, c.last_name, c.cv, u.email
-    FROM candidates AS c
-    JOIN applications AS a ON a.candidate_id = c.user_id
-    JOIN job_postings AS j ON a.job_posting_id = j.id
-    JOIN users AS u ON j.recruiter_id = u.id
+    FROM candidates c
+    JOIN applications a ON a.candidate_id = c.user_id
+    JOIN job_postings j ON a.job_posting_id = j.id
+    JOIN users u ON j.recruiter_id = u.id
     WHERE a.candidate_id = $1 AND a.job_posting_id = $2`;
+
     const selectValues = [candidateId, jobId];
     const result = await db.query(selectQuery, selectValues);
     const { first_name, last_name, cv, email } = result.rows[0];
