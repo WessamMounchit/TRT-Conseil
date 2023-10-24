@@ -2,7 +2,7 @@ const { Router } = require("express");
 const {
   validationMiddleware,
 } = require("../middlewares/validation-middleware");
-const { approveAccount, approveJobOffer, approveApplication, getUsers } = require("../controllers/consultant");
+const { approveAccount, approveJobOffer, approveApplication, getUsers, getJobPostings } = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
 const { consultantValidation, roleValidationConsultant } = require("../validators/consultant");
@@ -37,6 +37,14 @@ router.get(
   roleValidationConsultant,
   validationMiddleware,
   getUsers
+);
+
+router.get(
+  "/get-job-postings",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  validationMiddleware,
+  getJobPostings
 );
 
 module.exports = router;

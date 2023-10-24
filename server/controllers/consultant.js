@@ -21,10 +21,12 @@ exports.approveAccount = async (req, res) => {
 
 exports.approveJobOffer = async (req, res) => {
   const { jobId } = req.params;
+  const consultantId = req.user.id;
 
   try {
-    const query = "UPDATE job_postings SET is_valid = $1 WHERE id = $2";
-    const values = [true, jobId];
+    const query =
+      "UPDATE job_postings SET is_valid = $1, consultant_id = $2 WHERE id = $3";
+    const values = [true, consultantId, jobId];
     await db.query(query, values);
 
     return res.status(200).json({ message: "Annonce approuvée avec succès" });
@@ -73,9 +75,8 @@ exports.approveApplication = async (req, res) => {
 };
 
 exports.getUsers = async (req, res) => {
-
   try {
-    const query = 'SELECT * FROM users';
+    const query = "SELECT * FROM users";
     const result = await db.query(query);
 
     return res.status(200).json({
@@ -86,6 +87,23 @@ exports.getUsers = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Erreur lors de la sélection des Utilisateurs" });
+      .json({ error: "Erreur lors de la sélection des utilisateurs" });
+  }
+};
+
+exports.getJobPostings = async (req, res) => {
+  try {
+    const query = "SELECT * FROM job_postings";
+    const result = await db.query(query);
+
+    return res.status(200).json({
+      message: "Annonces sélectionnés avec succès",
+      jobPostings: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des annonces" });
   }
 };
