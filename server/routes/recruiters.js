@@ -4,7 +4,7 @@ const {
 } = require("../middlewares/validation-middleware");
 const router = Router();
 const passport = require("passport");
-const { createJobOffer } = require("../controllers/recruiter");
+const { createJobOffer, completeRecruiterProfile } = require("../controllers/recruiter");
 const { recruiterValidation } = require("../validators/recruiter");
 
 router.post(
@@ -14,5 +14,14 @@ router.post(
   validationMiddleware,
   createJobOffer
 );
+
+router.post(
+  "/complete-profile/:userId",
+  passport.authenticate("jwt", { session: false }),
+  recruiterValidation,
+  validationMiddleware,
+  completeRecruiterProfile
+);
+
 
 module.exports = router;
