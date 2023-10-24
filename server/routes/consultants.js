@@ -2,10 +2,10 @@ const { Router } = require("express");
 const {
   validationMiddleware,
 } = require("../middlewares/validation-middleware");
-const { approveAccount, approveJobOffer, approveApplication } = require("../controllers/consultant");
+const { approveAccount, approveJobOffer, approveApplication, getUsers } = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
-const { consultantValidation, approuveApplicationValidation } = require("../validators/consultant");
+const { consultantValidation, roleValidationConsultant } = require("../validators/consultant");
 
 router.post(
   "/approuve-account/:accountId",
@@ -26,9 +26,17 @@ router.post(
 router.post(
   "/approuve-application/:candidateId/:jobId",
   passport.authenticate("jwt", { session: false }),
-  approuveApplicationValidation,
+  roleValidationConsultant,
   validationMiddleware,
   approveApplication
+);
+
+router.get(
+  "/get-users",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  validationMiddleware,
+  getUsers
 );
 
 module.exports = router;

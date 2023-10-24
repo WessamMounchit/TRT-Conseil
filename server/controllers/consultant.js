@@ -71,3 +71,21 @@ exports.approveApplication = async (req, res) => {
       .json({ error: "Erreur lors de l'approbation de la candidature" });
   }
 };
+
+exports.getUsers = async (req, res) => {
+
+  try {
+    const query = 'SELECT * FROM users';
+    const result = await db.query(query);
+
+    return res.status(200).json({
+      message: "Utilisateurs sélectionnés avec succès",
+      users: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des Utilisateurs" });
+  }
+};

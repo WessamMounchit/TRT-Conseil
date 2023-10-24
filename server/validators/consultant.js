@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const db = require("../db");
 
 //ROLE VALIDATION
-const roleValidationConsultant = check("role").custom(
+const roleValidation = check("role").custom(
   async (value, { req }) => {
     const consultantRole = req.user.role;
 
@@ -45,9 +45,9 @@ const checkIfJobOfferApprouved = check("is_valid").custom(
 
 module.exports = {
   consultantValidation: [
-    roleValidationConsultant,
+    roleValidation,
     checkIfActive,
     checkIfJobOfferApprouved,
   ],
-  approuveApplicationValidation: [roleValidationConsultant],
+  roleValidationConsultant: [roleValidation]
 };
