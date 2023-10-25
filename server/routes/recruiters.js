@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const passport = require("passport");
-const { createJobOffer, completeRecruiterProfile, getActiveCandidatesApplying } = require("../controllers/recruiter");
+const { createJobOffer, completeRecruiterProfile, getActiveCandidatesApplying, getRecruiterJobPostings } = require("../controllers/recruiter");
 const { roleValidationRecruiter } = require("../validators/recruiter");
 
 router.post(
@@ -19,11 +19,19 @@ router.post(
 );
 
 router.get(
+  "/get-job-postings",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationRecruiter,
+  getRecruiterJobPostings
+);
+
+router.get(
   "/get-candidates/:jobId",
   passport.authenticate("jwt", { session: false }),
   roleValidationRecruiter,
   getActiveCandidatesApplying
 );
+
 
 
 module.exports = router;

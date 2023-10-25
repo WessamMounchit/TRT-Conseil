@@ -61,6 +61,12 @@ exports.getActiveCandidatesApplying = async (req, res) => {
     const values = [jobId];
     const result = await db.query(query, values);
 
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucun candidat n'a postulé à cette annonce",
+      });
+    }
+
     return res.status(200).json({
       message: "Candidats sélectionnés avec succès",
       candidates: result.rows,
@@ -70,5 +76,35 @@ exports.getActiveCandidatesApplying = async (req, res) => {
     return res
       .status(500)
       .json({ error: "Erreur lors de la sélection des candidats" });
+  }
+};
+
+exports.getRecruiterJobPostings = async (req, res) => {
+  const recruiterId = req.user.id;
+
+  try {
+    const query = `
+    SELECT job_postings.*
+    FROM job_postings
+    WHERE job_postings.recruiter_id = $1`;
+
+    const values = [recruiterId];
+    const result = await db.query(query, values);
+
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucune annonce postée par ce recruteur",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Annonces du recruteur sélectionnées avec succès",
+      jobPostings: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des annonces" });
   }
 };
