@@ -1,28 +1,38 @@
 const { Router } = require("express");
-const {
-  validationMiddleware,
-} = require("../middlewares/validation-middleware");
 const router = Router();
 const passport = require("passport");
-const { candidateValidation } = require("../validators/candidate");
-const { applyToJob, completeCandidateProfile } = require("../controllers/candidate");
+const {
+  applicationValidation,
+  completeProfileValidation,
+  roleValidationCandidate,
+} = require("../validators/candidate");
+const {
+  applyToJob,
+  completeCandidateProfile,
+  getApprouvedJobPostings,
+} = require("../controllers/candidate");
 const upload = require("../middlewares/multer-config");
 
 router.post(
-  "/application/:candidateId/:jobId",
+  "/application/:jobId",
   passport.authenticate("jwt", { session: false }),
-  candidateValidation,
-  validationMiddleware,
+  applicationValidation,
   applyToJob
 );
 
 router.post(
-  "/complete-profile/:userId",
+  "/complete-profile",
   passport.authenticate("jwt", { session: false }),
-  candidateValidation,
-  validationMiddleware,
+  completeProfileValidation,
   upload.single("cv"),
   completeCandidateProfile
+);
+
+router.get(
+  "/get-job-postings",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationCandidate,
+  getApprouvedJobPostings
 );
 
 module.exports = router;

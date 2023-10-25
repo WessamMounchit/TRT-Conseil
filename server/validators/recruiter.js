@@ -1,14 +1,12 @@
-const { check } = require("express-validator");
-
 //ROLE VALIDATION
-const roleValidationRecruiter = check("role").custom(async (value, { req }) => {
+exports.roleValidationRecruiter = async (req, res, next) => {
   const recruiterRole = req.user.role;
 
   if (recruiterRole !== 3) {
-    throw new Error("Permission refusée");
+    return res
+    .status(500)
+    .json({ error: "Permission refusée" });
+  } else {
+    next()
   }
-});
-
-module.exports = {
-  recruiterValidation: [roleValidationRecruiter],
 };

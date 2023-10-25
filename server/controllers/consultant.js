@@ -1,6 +1,7 @@
 const db = require("../db");
 const path = require("path");
 const { sendApprovalEmail } = require("../services/nodemailer");
+const { TRT_EMAIL } = require("../constants");
 
 exports.approveAccount = async (req, res) => {
   const { accountId } = req.params;
@@ -61,7 +62,7 @@ exports.approveApplication = async (req, res) => {
     const result = await db.query(selectQuery, selectValues);
     const { first_name, last_name, cv, email } = result.rows[0];
 
-    sendApprovalEmail(email, first_name, last_name, cv);
+    sendApprovalEmail(/* email */ TRT_EMAIL, first_name, last_name, cv);
 
     return res
       .status(200)
@@ -79,6 +80,12 @@ exports.getUsers = async (req, res) => {
     const query = "SELECT * FROM users";
     const result = await db.query(query);
 
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucun utilisateur n'est enregistré",
+      });
+    }
+
     return res.status(200).json({
       message: "Utilisateurs sélectionnés avec succès",
       users: result.rows,
@@ -95,6 +102,12 @@ exports.getJobPostings = async (req, res) => {
   try {
     const query = "SELECT * FROM job_postings";
     const result = await db.query(query);
+
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucune annonce n'est enregistrée",
+      });
+    }
 
     return res.status(200).json({
       message: "Annonces sélectionnés avec succès",

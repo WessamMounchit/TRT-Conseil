@@ -1,53 +1,65 @@
-const { check } = require("express-validator");
 const db = require("../db");
 
 //ROLE VALIDATION
-const roleValidation = check("role").custom(
-  async (value, { req }) => {
-    const consultantRole = req.user.role;
+const roleValidationConsultant = async (req, res, next) => {
+  const consultantRole = req.user.role;
 
-    if (consultantRole !== 2) {
-      throw new Error("Permission refusée");
-    }
+  if (consultantRole !== 2) {
+    return res.status(500).json({ error: "Permission refusée" });
+  } else {
+    next();
   }
-);
+};
 
 //CHECK IF ACTIVE
-const checkIfActive = check("is_active").custom(async (value, { req }) => {
-  if (req.params.accountId) {
-    const { accountId } = req.params;
+const checkIfActive = async (req, res, next) => {
+  const { accountId } = req.params;
+
+  try {
     const query = "SELECT is_active FROM users WHERE id = $1";
     const values = [accountId];
     const result = await db.query(query, values);
 
     if (result.rows[0].is_active === true) {
-      throw new Error("Ce compte est déjà activé");
+      return res.status(500).json({ error: "Ce compte est déjà activé" });
+    } else {
+      next();
     }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification du compte a échoué" });
   }
-});
+};
 
 //CHECK IF JOB OFFER
-const checkIfJobOfferApprouved = check("is_valid").custom(
-  async (value, { req }) => {
-    if (req.params.jobId) {
-      const { jobId } = req.params;
+const checkIfJobOfferApprouved = async (req, res, next) => {
+  const { jobId } = req.params;
 
-      const query = "SELECT is_valid FROM job_postings WHERE id = $1";
-      const values = [jobId];
-      const result = await db.query(query, values);
+  try {
+    const query = "SELECT is_valid FROM job_postings WHERE id = $1";
+    const values = [jobId];
+    const result = await db.query(query, values);
 
-      if (result.rows[0].is_valid === true) {
-        throw new Error("Cette annonce est déjà validée");
-      }
+    if (result.rows[0].is_valid === true) {
+      return res.status(500).json({ error: "Cette annonce est déjà validée" });
+    } else {
+      next();
     }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification de l'annonce a échoué" });
   }
-);
+};
 
 module.exports = {
+  roleValidationConsultant,
+  approuveAccountValidation: [roleValidationConsultant, checkIfActive],
+  JobPostingValidation: [roleValidationConsultant, checkIfJobOfferApprouved],
   consultantValidation: [
-    roleValidation,
+    roleValidationConsultant,
     checkIfActive,
     checkIfJobOfferApprouved,
   ],
-  roleValidationConsultant: [roleValidation]
 };

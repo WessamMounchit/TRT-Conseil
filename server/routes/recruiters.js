@@ -1,33 +1,27 @@
 const { Router } = require("express");
-const {
-  validationMiddleware,
-} = require("../middlewares/validation-middleware");
 const router = Router();
 const passport = require("passport");
 const { createJobOffer, completeRecruiterProfile, getActiveCandidatesApplying } = require("../controllers/recruiter");
-const { recruiterValidation } = require("../validators/recruiter");
+const { roleValidationRecruiter } = require("../validators/recruiter");
 
 router.post(
   "/create-job-offer",
   passport.authenticate("jwt", { session: false }),
-  recruiterValidation,
-  validationMiddleware,
+  roleValidationRecruiter,
   createJobOffer
 );
 
 router.post(
-  "/complete-profile/:userId",
+  "/complete-profile",
   passport.authenticate("jwt", { session: false }),
-  recruiterValidation,
-  validationMiddleware,
+  roleValidationRecruiter,
   completeRecruiterProfile
 );
 
 router.get(
   "/get-candidates/:jobId",
   passport.authenticate("jwt", { session: false }),
-  recruiterValidation,
-  validationMiddleware,
+  roleValidationRecruiter,
   getActiveCandidatesApplying
 );
 

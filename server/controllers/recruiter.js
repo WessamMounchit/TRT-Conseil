@@ -26,13 +26,13 @@ exports.createJobOffer = async (req, res) => {
 };
 
 exports.completeRecruiterProfile = async (req, res) => {
-  const { userId } = req.params;
+  const recruiterId = req.user.id;
   const { companyName, address } = req.body;
 
   try {
     const query =
       "UPDATE recruiters SET company_name = $1, address = $2 WHERE user_id = $3";
-    const values = [companyName, address, userId];
+    const values = [companyName, address, recruiterId];
 
     await db.query(query, values);
 
