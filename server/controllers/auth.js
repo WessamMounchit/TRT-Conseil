@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
   };
 
   try {
-    const token = await sign(payload, SECRET);
+    const token = sign(payload, SECRET, { expiresIn: '2h' });
 
     return res.status(200).json({
       success: true,
