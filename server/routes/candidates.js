@@ -10,6 +10,7 @@ const {
   applyToJob,
   completeCandidateProfile,
   getApprouvedJobPostings,
+  getJobsApplied,
 } = require("../controllers/candidate");
 const upload = require("../middlewares/multer-config");
 
@@ -33,6 +34,13 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   roleValidationCandidate,
   getApprouvedJobPostings
+);
+
+router.get(
+  "/get-jobs-applied",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationCandidate,
+  getJobsApplied
 );
 
 module.exports = router;

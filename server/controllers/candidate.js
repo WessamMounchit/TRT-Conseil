@@ -75,3 +75,34 @@ exports.getApprouvedJobPostings = async (req, res) => {
       .json({ error: "Erreur lors de la sélection des annonces" });
   }
 };
+
+exports.getJobsApplied = async (req, res) => {
+  const candidateId = req.user.id;
+
+  try {
+    const query = `
+    SELECT job_postings.*
+    FROM job_postings
+    JOIN applications ON job_postings.id = applications.job_posting_id
+    WHERE applications.candidate_id = $1`;
+    const values = [candidateId];
+
+    const result = await db.query(query, values);
+
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucune annonce postulée par ce candidat",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Annonces postulées sélectionnés avec succès",
+      jobsApplied: result.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des annonces" });
+  }
+};
