@@ -7,7 +7,7 @@ function validateEmail(req, res, next) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email || !emailRegex.test(email)) {
-    return res.status(400).send("Veuillez fournir un email valide");
+    return res.status(400).json({error: "Veuillez fournir un email valide"});
   }
 
   next();
@@ -19,9 +19,9 @@ function validatePassword(req, res, next) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).*$/;
 
   if (!password || password.length < 10 || !passwordRegex.test(password)) {
-    return res.status(400).send(
-      "Le mot de passe doit contenir au moins une majuscule, un caractère spécial et un chiffre"
-    );
+    return res.status(400).json({
+      error: "Le mot de passe doit contenir au moins une majuscule, un caractère spécial et un chiffre"
+  });
   }
 
   next();

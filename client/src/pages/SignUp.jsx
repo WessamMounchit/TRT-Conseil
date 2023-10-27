@@ -8,38 +8,32 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { login } from "../api/auth";
-import { useDispatch } from "react-redux";
-import { authenticateUser } from "../redux/authSlice";
-import secureLocalStorage from "react-secure-storage";
+import { register } from "../api/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-export default function SignIn() {
-  const dispatch = useDispatch();
+export default function SignUp() {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
+    role: ""
   });
 
-  const { email, password } = inputs;
+  
+  const { email, password, role } = inputs;
+  console.log(role)
 
   const onChange = (e) =>
-  setInputs({ ...inputs, [e.target.name]: e.target.value });
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await login({ email, password });
-      const { role, token } = response.data;
-
-      dispatch(authenticateUser());
-      secureLocalStorage.setItem("token", token);
-      secureLocalStorage.setItem("isAuth", "true");
-      secureLocalStorage.setItem("role", role);
-
-      toast.success(response.data.info);
+      const response = await register({ email, password, role });
+      
+      toast.success(response.data.message);
     } catch (error) {
       console.error(error.message);
       toast.error(error.response.data.error);
@@ -61,7 +55,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Connexion à TRT Conseil
+          Inscription à TRT Conseil
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <TextField
@@ -88,18 +82,32 @@ export default function SignIn() {
             value={password}
             onChange={(e) => onChange(e)}
           />
+          <FormControl required sx={{ mt: 2 }} fullWidth>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+              labelId="role-label"
+              name="role"
+              id="role"
+              value={role}
+              label="Role"
+              onChange={(e) => onChange(e)}
+            >
+              <MenuItem value={4}>Candidat</MenuItem>
+              <MenuItem value={3}>Recruteur</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Se connecter
+            S&apos;inscrire
           </Button>
           <Grid container>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Vous n'avez pas de compte ? Créez un compte"}
+                {"Vous avez déjà un compte ? Connectez-vous"}
               </Link>
             </Grid>
           </Grid>
