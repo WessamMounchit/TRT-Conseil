@@ -51,6 +51,12 @@ const emailExists = async (req, res, next) => {
 //ROLE VALIDATION
 const roleValidation = async (req, res, next) => {
   const role = req.body.role;
+  let adminRole
+
+  if (req.user.role === 1) {
+    adminRole = req.user.role
+  }
+  
   try {
     const result = await db.query("SELECT id FROM roles WHERE id = $1", [role]);
 
@@ -60,7 +66,9 @@ const roleValidation = async (req, res, next) => {
 
     if (result.rows.length === 0) {
       return res.status(500).json({ error: "Rôle non valide." });
-    } else if (req.body.role === 1 || req.body.role === 2) {
+    } else if (adminRole && role != 2) {
+      return res.status(500).json({ error: "Action non autorisée." });
+    } else if (!adminRole && (role === 1 || role === 2)) {
       return res.status(500).json({ error: "Action non autorisée." });
     } else {
       next();
