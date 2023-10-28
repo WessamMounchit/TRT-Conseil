@@ -4,6 +4,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Admin from './pages/Admin/Admin'
 import CompleteCandidatProfile from './pages/Candidates/CompleteProfile'
+import CompleteRecruiterProfile from './pages/Recruiters/CompleteProfile'
 function App() {
 
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/candidates/complete-profile" element={<CompleteCandidatProfile />} />
+      <Route path="/recruiters/complete-profile" element={<CompleteRecruiterProfile />} />
     </Routes>
     </>
 

@@ -9,36 +9,17 @@ import Container from "@mui/material/Container";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
-import { completeCandidateProfile } from "../../api/candidates";
+import { completeRecruiterProfile } from "../../api/recruiters";
 
-export default function CompleteCandidatProfile() {
+export default function CompleteRecruiterProfile() {
   const [inputs, setInputs] = useState({
-    firstName: "",
-    lastName: "",
+    companyName: "",
+    address: "",
   });
 
-  const [cv, setCv] = useState(null);
 
-  const handleCvChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setCv(selectedFile);
-  };
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
-
-  const { firstName, lastName } = inputs;
+  
+  const { companyName, address } = inputs;
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -47,13 +28,7 @@ export default function CompleteCandidatProfile() {
     event.preventDefault();
 
     try {
-      const formData = new FormData();
-
-      formData.append("firstName", firstName);
-      formData.append("lastName", lastName);
-      formData.append("cv", cv);
-
-      const response = await completeCandidateProfile(formData);
+      const response = await completeRecruiterProfile({ companyName, address });
 
       toast.success(response.data.message);
     } catch (error) {
@@ -83,14 +58,13 @@ export default function CompleteCandidatProfile() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
-                name="firstName"
+                name="companyName"
                 required
-                value={firstName}
+                value={companyName}
                 onChange={onChange}
                 fullWidth
-                id="firstName"
-                label="Prénom"
+                id="companyName"
+                label="Nom de la société"
                 autoFocus
               />
             </Grid>
@@ -98,31 +72,12 @@ export default function CompleteCandidatProfile() {
               <TextField
                 required
                 fullWidth
-                value={lastName}
+                value={address}
                 onChange={onChange}
-                id="lastName"
-                label="Nom"
-                name="lastName"
-                autoComplete="family-name"
+                id="address"
+                label="Adresse"
+                name="address"
               />
-            </Grid>
-            <Grid item xs={12}>
-              <Button sx={{ bgcolor: "green" }}
-                component="label"
-                fullWidth
-                variant="contained"
-                value={cv}
-                onChange={handleCvChange} 
-                name="cv"
-                startIcon={<CloudUploadIcon />}
-              >
-                Votre CV
-                <VisuallyHiddenInput
-                  accept="application/pdf"
-                  type="file"
-                  required
-                />
-              </Button>
             </Grid>
           </Grid>
           <Button
