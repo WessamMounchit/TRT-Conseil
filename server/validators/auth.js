@@ -53,7 +53,7 @@ const roleValidation = async (req, res, next) => {
   const role = req.body.role;
   let adminRole
 
-  if (req.user.role === 1) {
+  if (req.user?.role === 1) {
     adminRole = req.user.role
   }
   

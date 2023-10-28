@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { createConsultant } from "../api/admin";
+import { createConsultant } from "../../api/admin";
 
 export default function Admin() {
   const [inputs, setInputs] = useState({

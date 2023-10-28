@@ -22,7 +22,6 @@ export default function SignUp() {
 
   
   const { email, password, role } = inputs;
-  console.log(role)
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
