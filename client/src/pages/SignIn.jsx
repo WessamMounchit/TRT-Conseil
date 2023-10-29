@@ -14,6 +14,15 @@ import { authenticateUser } from "../redux/authSlice";
 import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -22,10 +31,14 @@ export default function SignIn() {
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
   const { email, password } = inputs;
 
   const onChange = (e) =>
-  setInputs({ ...inputs, [e.target.name]: e.target.value });
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -76,18 +89,33 @@ export default function SignIn() {
             value={email}
             onChange={(e) => onChange(e)}
           />
-          <TextField
-            margin="normal"
-            required
+          <FormControl
+            sx={{ mt: 2 }}
+            variant="outlined"
             fullWidth
-            name="password"
-            label="Mot de passe"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            required
             value={password}
             onChange={(e) => onChange(e)}
-          />
+          >
+            <InputLabel htmlFor="password">Mot de passe</InputLabel>
+            <OutlinedInput
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Mot de passe"
+            />
+          </FormControl>
           <Button
             type="submit"
             fullWidth
