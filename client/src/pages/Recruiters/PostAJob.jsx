@@ -2,27 +2,22 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { login } from "../api/auth";
-import { useDispatch } from "react-redux";
-import { authenticateUser } from "../redux/authSlice";
-import secureLocalStorage from "react-secure-storage";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { createJobOffer } from "../../api/recruiters";
+import WorkIcon from '@mui/icons-material/Work';
 
-export default function SignIn() {
-  const dispatch = useDispatch();
+export default function PostAJob() {
   const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
+    jobTitle: "",
+    workLocation: "",
+    description: ""
   });
 
-  const { email, password } = inputs;
+  const { jobTitle, workLocation, description } = inputs;
 
   const onChange = (e) =>
   setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -31,13 +26,7 @@ export default function SignIn() {
     event.preventDefault();
 
     try {
-      const response = await login({ email, password });
-      const { role, token } = response.data;
-
-      dispatch(authenticateUser());
-      secureLocalStorage.setItem("token", token);
-      secureLocalStorage.setItem("isAuth", "true");
-      secureLocalStorage.setItem("role", role);
+      const response = await createJobOffer({ jobTitle, workLocation, description });
 
       toast.success(response.data.message);
     } catch (error) {
@@ -57,52 +46,53 @@ export default function SignIn() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "black" }}>
-          <LockOutlinedIcon />
+        <Avatar sx={{ m: 1, bgcolor: "red" }}>
+          <WorkIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Connexion à TRT Conseil
+          Poster un annonce
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Adresse email"
-            name="email"
-            autoComplete="email"
+            id="jobTitle"
+            label="Titre de l'annonce"
+            name="jobTitle"
             autoFocus
-            value={email}
+            value={jobTitle}
             onChange={(e) => onChange(e)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Mot de passe"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
+            name="workLocation"
+            label="Lieu du travail"
+            id="workLocation"
+            value={workLocation}
             onChange={(e) => onChange(e)}
           />
+          <TextField sx={{ mt: 2}}
+          id="description"
+          label="Description de l'annonce"
+          name="description"
+          value={description}
+          onChange={(e) => onChange(e)}
+          required
+          fullWidth
+          multiline
+          rows={4}
+        />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, bgcolor: "green" }}
           >
-            Se connecter
+            Poster
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Vous n'avez pas de compte ? Créez un compte"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>
