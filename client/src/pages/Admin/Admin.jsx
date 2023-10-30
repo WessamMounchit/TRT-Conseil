@@ -3,12 +3,13 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { createConsultant } from "../../api/admin";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+
 
 export default function Admin() {
   const [inputs, setInputs] = useState({
@@ -45,8 +46,8 @@ export default function Admin() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "black" }}>
-          <LockOutlinedIcon />
+        <Avatar sx={{ m: 1, bgcolor: "green" }}>
+          <PersonAddIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Créer un consultant
@@ -78,6 +79,7 @@ export default function Admin() {
           />
           <Button
             type="submit"
+            color="success"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

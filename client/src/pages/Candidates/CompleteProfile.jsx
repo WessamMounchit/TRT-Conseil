@@ -107,7 +107,8 @@ export default function CompleteCandidatProfile() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Button sx={{ bgcolor: "green" }}
+              <Button
+                color="success"
                 component="label"
                 fullWidth
                 variant="contained"

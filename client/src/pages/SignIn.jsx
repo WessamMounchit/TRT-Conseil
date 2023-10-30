@@ -45,11 +45,12 @@ export default function SignIn() {
 
     try {
       const response = await login({ email, password });
-      const { role, token } = response.data;
+      const { role, userEmail, token } = response.data;
 
       dispatch(authenticateUser());
       secureLocalStorage.setItem("token", token);
       secureLocalStorage.setItem("isAuth", "true");
+      secureLocalStorage.setItem("email", userEmail);
       secureLocalStorage.setItem("role", role);
 
       toast.success(response.data.message);

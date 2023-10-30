@@ -87,9 +87,10 @@ export default function PostAJob() {
         />
           <Button
             type="submit"
+            color="success"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2, bgcolor: "green" }}
+            sx={{ mt: 3, mb: 2 }}
           >
             Poster
           </Button>

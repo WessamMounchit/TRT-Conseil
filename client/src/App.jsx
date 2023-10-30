@@ -6,6 +6,7 @@ import Admin from './pages/Admin/Admin'
 import CompleteCandidatProfile from './pages/Candidates/CompleteProfile'
 import CompleteRecruiterProfile from './pages/Recruiters/CompleteProfile'
 import PostAJob from './pages/Recruiters/PostAJob'
+import AdminDashboard from './pages/Admin/AdminDashboard'
 function App() {
 
   return (
@@ -13,7 +14,8 @@ function App() {
     <Routes>
       <Route index path="/" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route path="/admin/add-consultant" element={<Admin />} />
+      <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/candidates/complete-profile" element={<CompleteCandidatProfile />} />
       <Route path="/recruiters/complete-profile" element={<CompleteRecruiterProfile />} />
       <Route path="/recruiters/post-a-job" element={<PostAJob />} />
