@@ -1,8 +1,22 @@
 const { Router } = require("express");
-const { approveAccount, approveJobOffer, approveApplication, getUsers, getJobPostings, desactivateAccount, deleteUser } = require("../controllers/consultant");
+const {
+  approveAccount,
+  approveJobOffer,
+  approveApplication,
+  getUsers,
+  getJobPostings,
+  desactivateAccount,
+  deleteUser,
+  unapproveJobOffer,
+  deleteJob,
+} = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
-const { roleValidationConsultant, approuveAccountValidation, JobPostingValidation } = require("../validators/consultant");
+const {
+  roleValidationConsultant,
+  approuveAccountValidation,
+  JobPostingValidation,
+} = require("../validators/consultant");
 
 router.post(
   "/approuve-account/:accountId",
@@ -23,6 +37,13 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   JobPostingValidation,
   approveJobOffer
+);
+
+router.post(
+  "/unapprouve-job-posting/:jobId",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  unapproveJobOffer
 );
 
 router.post(
@@ -51,6 +72,13 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   roleValidationConsultant,
   deleteUser
+);
+
+router.delete(
+  "/delete-job/:jobId",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  deleteJob
 );
 
 module.exports = router;

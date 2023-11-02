@@ -1,9 +1,13 @@
-import ListOfUsers from './ListOfUsers'
+import ListOfJobs from "./ListOfJobs";
+import ListOfUsers from "./ListOfUsers";
 
 const ConsultantDashboard = () => {
   return (
-    <ListOfUsers />
-  )
-}
+    <div>
+      <ListOfUsers />
+      <ListOfJobs />
+    </div>
+  );
+};
 
-export default ConsultantDashboard
+export default ConsultantDashboard;

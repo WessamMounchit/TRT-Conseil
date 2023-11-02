@@ -36,7 +36,6 @@ const SignIn = () => {
       toast.error(error.response.data.error);
     }
   };
-  console.log(secureLocalStorage.getItem("role"))
   
   return (
     <form
@@ -49,6 +48,7 @@ const SignIn = () => {
         id="email"
         name="email"
         type="text"
+        autoComplete="current-email"
         placeholder="Email"
         className="input input-bordered w-full max-w-sm sm:max-w-md"
         onChange={(e) => onChange(e)}
@@ -57,6 +57,7 @@ const SignIn = () => {
       <input
         required
         type="password"
+        autoComplete="current-password"
         value={password}
         onChange={(e) => onChange(e)}
         id="password"

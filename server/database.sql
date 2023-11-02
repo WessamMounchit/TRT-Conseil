@@ -26,7 +26,7 @@ CREATE TABLE recruiters (
   user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   company_name VARCHAR(255),
   address VARCHAR(255),
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE job_postings (
