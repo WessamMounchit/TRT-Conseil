@@ -53,9 +53,31 @@ const checkIfJobOfferApprouved = async (req, res, next) => {
   }
 };
 
+//CHECK IF APPLICATION ALREADY APPROVED
+const checkIfApplicationApproved = async (req, res, next) => {
+  const { applicationId } = req.params;
+
+  try {
+    const query = "SELECT is_valid FROM applications WHERE id = $1";
+    const values = [applicationId];
+    const result = await db.query(query, values);
+
+    if (result.rows[0].is_valid === true) {
+      return res.status(500).json({ error: "Cette candidature est déjà validée" });
+    } else {
+      next();
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification de la candidature a échoué" });
+  }
+};
+
 module.exports = {
   roleValidationConsultant,
   approuveAccountValidation: [roleValidationConsultant, checkIfActive],
+  approuveApplicationValidation: [roleValidationConsultant, checkIfApplicationApproved],
   JobPostingValidation: [roleValidationConsultant, checkIfJobOfferApprouved],
   consultantValidation: [
     roleValidationConsultant,

@@ -9,6 +9,9 @@ const {
   deleteUser,
   unapproveJobOffer,
   deleteJob,
+  getApplications,
+  unapproveApplication,
+  deleteApplication,
 } = require("../controllers/consultant");
 const router = Router();
 const passport = require("passport");
@@ -16,6 +19,7 @@ const {
   roleValidationConsultant,
   approuveAccountValidation,
   JobPostingValidation,
+  approuveApplicationValidation,
 } = require("../validators/consultant");
 
 router.post(
@@ -47,9 +51,16 @@ router.post(
 );
 
 router.post(
-  "/approuve-application/:candidateId/:jobId",
+  "/unapprouve-application/:applicationId",
   passport.authenticate("jwt", { session: false }),
   roleValidationConsultant,
+  unapproveApplication
+);
+
+router.post(
+  "/approuve-application/:applicationId",
+  passport.authenticate("jwt", { session: false }),
+  approuveApplicationValidation,
   approveApplication
 );
 
@@ -67,6 +78,13 @@ router.get(
   getJobPostings
 );
 
+router.get(
+  "/get-applications",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  getApplications
+);
+
 router.delete(
   "/delete-user/:accountId",
   passport.authenticate("jwt", { session: false }),
@@ -79,6 +97,13 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   roleValidationConsultant,
   deleteJob
+);
+
+router.delete(
+  "/delete-application/:applicationId",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationConsultant,
+  deleteApplication
 );
 
 module.exports = router;
