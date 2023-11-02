@@ -20,6 +20,23 @@ exports.approveAccount = async (req, res) => {
   }
 };
 
+exports.desactivateAccount = async (req, res) => {
+  const { accountId } = req.params;
+
+  try {
+    const query = "UPDATE users SET is_active = $1 WHERE id = $2";
+    const values = [false, accountId];
+    await db.query(query, values);
+
+    return res.status(200).json({ message: "Compte désactivé avec succès" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la désactivation du compte du compte" });
+  }
+};
+
 exports.approveJobOffer = async (req, res) => {
   const { jobId } = req.params;
   const consultantId = req.user.id;
@@ -75,26 +92,24 @@ exports.approveApplication = async (req, res) => {
   }
 };
 
+
 exports.getUsers = async (req, res) => {
   try {
-    const query = "SELECT * FROM users";
+    const query = "SELECT id, email, role_id, is_active FROM users";
     const result = await db.query(query);
-
+    
     if (result.rowCount === 0) {
       return res.status(200).json({
         message: "Aucun utilisateur n'est enregistré",
       });
     }
-
-    return res.status(200).json({
-      message: "Utilisateurs sélectionnés avec succès",
-      users: result.rows,
-    });
+    
+    return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     return res
-      .status(500)
-      .json({ error: "Erreur lors de la sélection des utilisateurs" });
+    .status(500)
+    .json({ error: "Erreur lors de la sélection des utilisateurs" });
   }
 };
 
@@ -102,13 +117,13 @@ exports.getJobPostings = async (req, res) => {
   try {
     const query = "SELECT * FROM job_postings";
     const result = await db.query(query);
-
+    
     if (result.rowCount === 0) {
       return res.status(200).json({
         message: "Aucune annonce n'est enregistrée",
       });
     }
-
+    
     return res.status(200).json({
       message: "Annonces sélectionnés avec succès",
       jobPostings: result.rows,
@@ -116,7 +131,23 @@ exports.getJobPostings = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res
+    .status(500)
+    .json({ error: "Erreur lors de la sélection des annonces" });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const {accountId} = req.params
+    const query = "DELETE FROM users WHERE id = $1";
+    const values = [accountId]
+    await db.query(query, values);
+
+    return res.status(200).json({message: "L'utilisateur a bien été supprimer."});
+  } catch (error) {
+    console.error(error);
+    return res
       .status(500)
-      .json({ error: "Erreur lors de la sélection des annonces" });
+      .json({ error: "Erreur lors de la suppression de l'utilisateur." });
   }
 };

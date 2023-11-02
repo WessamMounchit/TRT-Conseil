@@ -19,7 +19,7 @@ CREATE TABLE candidates (
   first_name VARCHAR(255),
   last_name VARCHAR(255),
   cv VARCHAR(255),
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE recruiters (

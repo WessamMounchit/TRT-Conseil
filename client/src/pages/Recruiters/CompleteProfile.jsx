@@ -1,14 +1,5 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import PersonIcon from "@mui/icons-material/Person";
 import { completeRecruiterProfile } from "../../api/recruiters";
 
 export default function CompleteRecruiterProfile() {
@@ -38,59 +29,32 @@ export default function CompleteRecruiterProfile() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 14,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "green" }}>
-          <PersonIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Compléter votre profil
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                name="companyName"
-                required
-                value={companyName}
-                onChange={onChange}
-                fullWidth
-                id="companyName"
-                label="Nom de la société"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                value={address}
-                onChange={onChange}
-                id="address"
-                label="Adresse"
-                name="address"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Enregistrer
-          </Button>
-          <Grid container justifyContent="flex-end"></Grid>
-        </Box>
-      </Box>
-    </Container>
+    <form
+      className="flex flex-col gap-6 justify-center items-center h-[100vh]"
+      onSubmit={handleSubmit}
+    >
+      <h1 className="font-semibold text-xl sm:text-3xl mb-4">Complétez votre profil</h1>
+      <input
+        required
+        id="companyName"
+        name="companyName"
+        type="text"
+        placeholder="Nom de l'entrprise"
+        className="input input-bordered w-full max-w-sm sm:max-w-md"
+        onChange={(e) => onChange(e)}
+        value={companyName}
+      />
+      <input
+        required
+        type="text"
+        value={address}
+        onChange={(e) => onChange(e)}
+        id="address"
+        name="address"
+        placeholder="Adresse"
+        className="input input-bordered w-full max-w-sm sm:max-w-md"
+      />
+      <button className="btn btn-primary mt-5 w-44">Enregistrer</button>
+    </form>
   );
 }
