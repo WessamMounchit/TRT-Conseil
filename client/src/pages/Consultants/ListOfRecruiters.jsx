@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchData from "../../utils/fetchData";
 import {
-  ApproveApplication,
-  UnapproveApplication,
-  deleteApplication,
-  getApplications,
+  activeRecruiterAccount,
+  desactiveRecruiterAccount,
+  deleteAccount,
+  getRecruiters,
 } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -13,101 +13,101 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfApplications = () => {
-  const [applications, setApplications] = useState({
+const ListOfRecruiters = () => {
+  const [recruiters, setRecruiters] = useState({
     loading: false,
     error: false,
     data: [],
   });
 
-  const [openApplicationsList, setOpenApplicationsList] = useState(false);
+  const [openRecruitersList, setOpenRecruitersList] = useState(false);
 
   useEffect(() => {
-    fetchData(setApplications, getApplications);
+    fetchData(setRecruiters, getRecruiters);
   }, []);
 
-  const handleApplicationsActivation = async (applicationsId) => {
+  const handleRecruiterActivation = async (accountId) => {
     try {
-      const response = await ApproveApplication(applicationsId);
+      const response = await activeRecruiterAccount(accountId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setRecruiters, getRecruiters);
   };
 
-  const handleApplicationsDesactivation = async (applicationsId) => {
+  const handleRecruiterDesactivation = async (accountId) => {
     try {
-      const response = await UnapproveApplication(applicationsId);
+      const response = await desactiveRecruiterAccount(accountId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setRecruiters, getRecruiters);
   };
 
-  const handleApplicationsDeletion = async (applicationsId) => {
+  const handleRecruiterDeletion = async (accountId) => {
     try {
-      const response = await deleteApplication(applicationsId);
+      const response = await deleteAccount(accountId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setRecruiters, getRecruiters);
   };
 
   return (
     <>
       <h1 className="text-3xl text-center mb-11 mt-32 font-semibold hidden md:block">
-        Liste des candidatures
+        Liste des recruteurs
       </h1>
-      <div className="overflow-x-auto hidden mb-32 md:block mx-16">
+      <div className="overflow-x-auto hidden md:block mx-24">
         <table className="table">
           <thead>
             <tr className="bg-neutral uppercase">
               <th>ID</th>
-              <th>Candidat ID</th>
-              <th>Job ID</th>
-              <th>Consultant ID</th>
-              <th>Validation</th>
+              <th>Email</th>
+              <th>Nom de l&apos;entrprise</th>
+              <th>Actif</th>
               <th>Supprimer</th>
             </tr>
           </thead>
           <tbody>
-            {applications.data?.map((application) => (
-              <tr key={application.id} className="hover">
-                <th>{application.id}</th>
-                <td>{`${application.candidate_id.slice(0, 9)}...`}</td>
-                <td className="text-center">{application.job_posting_id}</td>
-                <td>{application.consultant_id ? `${application.consultant_id.slice(0, 9)}...` : "Non approuvée"}</td>
+            {recruiters.data?.map((recruiter) => (
+              <tr key={recruiter.id} className="hover">
+                <th>{`${recruiter.id.slice(0, 9)}...`}</th>
+                <td>{recruiter.email}</td>
+                <td>{recruiter.company_name}</td>
                 <td
-                  className="tooltip tooltip-left table-cell pl-[2.4rem]"
+                  className="tooltip tooltip-left table-cell pl-[1.4rem]"
                   data-tip={
-                    application.is_valid ? "Désapprouver la candidature" : "Approuver la candidature" 
+                    recruiter.is_active
+                      ? "Désactiver le compte"
+                      : "Activer le compte"
                   }
                 >
-                  {application.is_valid ? (
+                  {recruiter.is_active ? (
                     <AiFillCheckCircle
                       className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                      onClick={() => handleApplicationsDesactivation(application.id)}
+                      onClick={() => handleRecruiterDesactivation(recruiter.id)}
                     />
                   ) : (
                     <BsHourglassSplit
                       className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                      onClick={() => handleApplicationsActivation(application.id)}
+                      onClick={() => handleRecruiterActivation(recruiter.id)}
                     />
                   )}
                 </td>
                 <td
                   className="tooltip tooltip-left table-cell pl-[2.2rem]"
-                  data-tip="Supprimer la candidature"
+                  data-tip="Supprimer le compte"
                 >
                   <BsFillTrashFill
                     className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                    onClick={() => handleApplicationsDeletion(application.id)}
+                    onClick={() => handleRecruiterDeletion(recruiter.id)}
                   />
                 </td>
               </tr>
@@ -119,11 +119,11 @@ const ListOfApplications = () => {
       {/* MOBILE VIEW */}
       <div className="flex justify-center items-center md:hidden">
         <button
-          onClick={() => setOpenApplicationsList(!openApplicationsList)}
+          onClick={() => setOpenRecruitersList(!openRecruitersList)}
           className="btn btn-primary w-64 flex justify-between items-center"
         >
-          Liste des candidatures
-          {openApplicationsList ? (
+          Liste des recruteurs
+          {openRecruitersList ? (
             <AiFillCaretUp className="text-2xl" />
           ) : (
             <AiOutlineCaretDown className="text-2xl" />
@@ -131,42 +131,41 @@ const ListOfApplications = () => {
         </button>
       </div>
       <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
-        {openApplicationsList &&
-          applications.data?.map((application) => (
+        {openRecruitersList &&
+          recruiters.data?.map((recruiter) => (
             <div
-              key={application.id}
+              key={recruiter.id}
               className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
             >
               <div className="card-body items-center text-center flex gap-3">
-                <h2 className="card-title">{application.id}</h2>
-                <p>{`ID Candidate : ${application.candidate_id.slice(0, 9)}...`}</p>
-                <p>Job ID : {application.job_posting_id}</p>
-                <p>{application.consultant_id ? `${application.consultant_id.slice(0, 9)}...` : "Non approuvée"}</p>
+                <h2 className="card-title">{`${recruiter.id.slice(0, 9)}...`}</h2>
+                <p>{recruiter.company_name}</p>
+                <p>{recruiter.email}</p>
                 <div className="card-actions justify-end mt-8 flex gap-4">
                   <button
                     className="tooltip"
                     data-tip={
-                      application.is_valid
-                        ? "Désapprouver la candidature"
-                        : "Approuver la candidature"
+                      recruiter.is_active
+                        ? "Désactiver le compte"
+                        : "Activer le compte"
                     }
                   >
-                    {application.is_valid ? (
+                    {recruiter.is_active ? (
                       <AiFillCheckCircle
                         className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                        onClick={() => handleApplicationsDesactivation(application.id)}
+                        onClick={() => handleRecruiterDesactivation(recruiter.id)}
                       />
                     ) : (
                       <BsHourglassSplit
                         className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                        onClick={() => handleApplicationsActivation(application.id)}
+                        onClick={() => handleRecruiterActivation(recruiter.id)}
                       />
                     )}
                   </button>
-                  <button className="tooltip" data-tip="Supprimer la candidature">
+                  <button className="tooltip" data-tip="Supprimer le compte">
                     <BsFillTrashFill
                       className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                      onClick={() => handleApplicationsDeletion(application.id)}
+                      onClick={() => handleRecruiterDeletion(recruiter.id)}
                     />
                   </button>
                 </div>
@@ -178,4 +177,4 @@ const ListOfApplications = () => {
   );
 };
 
-export default ListOfApplications;
+export default ListOfRecruiters;

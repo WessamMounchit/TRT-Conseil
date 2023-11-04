@@ -5,7 +5,6 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role_id INTEGER NOT NULL,
-  is_active BOOLEAN DEFAULT false,
   FOREIGN KEY (role_id) REFERENCES Roles(id)
 );
 
@@ -19,6 +18,7 @@ CREATE TABLE candidates (
   first_name VARCHAR(255),
   last_name VARCHAR(255),
   cv VARCHAR(255),
+  is_active BOOLEAN DEFAULT false,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -26,6 +26,7 @@ CREATE TABLE recruiters (
   user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   company_name VARCHAR(255),
   address VARCHAR(255),
+  is_active BOOLEAN DEFAULT false,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 

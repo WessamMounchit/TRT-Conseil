@@ -1,9 +1,15 @@
 import axiosInstance from "../utils/axiosInstance";
 
-//GET USERS
+//GET CANDIDATES
 
-export async function getUsers() {
-  return await axiosInstance.get(`/consultants/get-users`);
+export async function getCandidates() {
+  return await axiosInstance.get(`/consultants/get-candidates`);
+}
+
+//GET CANDIDATES
+
+export async function getRecruiters() {
+  return await axiosInstance.get(`/consultants/get-recruiters`);
 }
 //GET JOBS
 
@@ -15,10 +21,16 @@ export async function getJobPostings() {
 export async function getApplications() {
   return await axiosInstance.get(`/consultants/get-applications`);
 }
-//ACTIVATE ACCOUNT
+//ACTIVATE CANDIDATE ACCOUNT
 
-export async function ActivateAccount(accountId) {
-  return await axiosInstance.post(`/consultants/approuve-account/${accountId}`);
+export async function activeCandidateAccount(accountId) {
+  return await axiosInstance.post(`/consultants/approve-candidate/${accountId}`);
+}
+
+//ACTIVATE CANDIDATE ACCOUNT
+
+export async function activeRecruiterAccount(accountId) {
+  return await axiosInstance.post(`/consultants/approve-recruiter/${accountId}`);
 }
 //APPROVE JOB
 
@@ -40,10 +52,15 @@ export async function UnapproveJob(jobId) {
 export async function UnapproveApplication(applicationId) {
   return await axiosInstance.post(`/consultants/unapprouve-application/${applicationId}`);
 }
-//DESACTIVATE ACCOUNT
+//DESACTIVATE CANDIDATE ACCOUNT
 
-export async function DesactivateAccount(accountId) {
-  return await axiosInstance.post(`/consultants/desactivate-account/${accountId}`);
+export async function desactiveCandidateAccount(accountId) {
+  return await axiosInstance.post(`/consultants/desactivate-candidate-account/${accountId}`);
+}
+//DESACTIVATE CANDIDATE ACCOUNT
+
+export async function desactiveRecruiterAccount(accountId) {
+  return await axiosInstance.post(`/consultants/desactivate-recruiter-account/${accountId}`);
 }
 //DELETE ACCOUNT
 

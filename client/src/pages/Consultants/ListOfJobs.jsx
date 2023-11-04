@@ -64,7 +64,7 @@ const ListOfJobs = () => {
       <h1 className="text-3xl text-center mb-11 mt-32 font-semibold hidden md:block">
         Liste des annonces
       </h1>
-      <div className="overflow-x-auto hidden md:block mx-16 h-96">
+      <div className="overflow-x-auto hidden md:block mx-16">
         <table className="table">
           <thead>
             <tr className="bg-neutral uppercase">
@@ -119,10 +119,10 @@ const ListOfJobs = () => {
       </div>
 
       {/* MOBILE VIEW */}
-      <div className="flex justify-center items-center mt-24 mb-12 md:hidden">
+      <div className="flex justify-center items-center md:hidden">
         <button
           onClick={() => setOpenJobsList(!openJobsList)}
-          className="btn btn-primary"
+          className="btn btn-primary w-64 flex justify-between items-center"
         >
           Liste des annonces
           {openJobsList ? (
@@ -132,12 +132,12 @@ const ListOfJobs = () => {
           )}
         </button>
       </div>
-      <div className="flex gap-6 justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
         {openJobsList &&
           jobPostings.data?.map((job) => (
             <div
               key={job.id}
-              className="card w-96 md:w-60 bg-neutral text-neutral-content md:hidden"
+              className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
             >
               <div className="card-body items-center text-center flex gap-3">
                 <h2 className="card-title">{job.id}</h2>

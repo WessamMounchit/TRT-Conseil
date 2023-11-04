@@ -12,23 +12,43 @@ const roleValidationConsultant = async (req, res, next) => {
 };
 
 //CHECK IF ACTIVE
-const checkIfActive = async (req, res, next) => {
+const checkIfCandidateActive = async (req, res, next) => {
   const { accountId } = req.params;
 
   try {
-    const query = "SELECT is_active FROM users WHERE id = $1";
+    const query = "SELECT is_active FROM candidates WHERE user_id = $1";
     const values = [accountId];
     const result = await db.query(query, values);
 
     if (result.rows[0].is_active === true) {
-      return res.status(500).json({ error: "Ce compte est déjà activé" });
+      return res.status(500).json({ error: "Ce compte candidat est déjà activé" });
     } else {
       next();
     }
   } catch (error) {
     return res
       .status(500)
-      .json({ error: "La vérification du compte a échoué" });
+      .json({ error: "La vérification du compte candidat a échoué" });
+  }
+};
+
+const checkIfRecruiterActive = async (req, res, next) => {
+  const { accountId } = req.params;
+
+  try {
+    const query = "SELECT is_active FROM recruiters WHERE user_id = $1";
+    const values = [accountId];
+    const result = await db.query(query, values);
+
+    if (result.rows[0].is_active === true) {
+      return res.status(500).json({ error: "Ce compte recruteur est déjà activé" });
+    } else {
+      next();
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification du compte recruteur a échoué" });
   }
 };
 
@@ -76,12 +96,8 @@ const checkIfApplicationApproved = async (req, res, next) => {
 
 module.exports = {
   roleValidationConsultant,
-  approuveAccountValidation: [roleValidationConsultant, checkIfActive],
-  approuveApplicationValidation: [roleValidationConsultant, checkIfApplicationApproved],
+  approveCandidatAccountValidation: [roleValidationConsultant, checkIfCandidateActive],
+  approveRecruiterAccountValidation: [roleValidationConsultant, checkIfRecruiterActive],
+  approveApplicationValidation: [roleValidationConsultant, checkIfApplicationApproved],
   JobPostingValidation: [roleValidationConsultant, checkIfJobOfferApprouved],
-  consultantValidation: [
-    roleValidationConsultant,
-    checkIfActive,
-    checkIfJobOfferApprouved,
-  ],
 };

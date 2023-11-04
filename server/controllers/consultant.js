@@ -3,37 +3,79 @@ const path = require("path");
 const { sendApprovalEmail } = require("../services/nodemailer");
 const { TRT_EMAIL } = require("../constants");
 
-exports.approveAccount = async (req, res) => {
+exports.approveCandidateAccount = async (req, res) => {
   const { accountId } = req.params;
 
   try {
-    const query = "UPDATE users SET is_active = $1 WHERE id = $2";
+    const query = "UPDATE candidates SET is_active = $1 WHERE user_id = $2";
     const values = [true, accountId];
     await db.query(query, values);
 
-    return res.status(200).json({ message: "Compte approuvé avec succès" });
+    return res
+      .status(200)
+      .json({ message: "Compte candidat approuvé avec succès" });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Erreur lors de l'approbation du compte" });
+      .json({ error: "Erreur lors de l'approbation du compte candidat" });
   }
 };
 
-exports.desactivateAccount = async (req, res) => {
+exports.approveRecruiterAccount = async (req, res) => {
   const { accountId } = req.params;
 
   try {
-    const query = "UPDATE users SET is_active = $1 WHERE id = $2";
-    const values = [false, accountId];
+    const query = "UPDATE recruiters SET is_active = $1 WHERE user_id = $2";
+    const values = [true, accountId];
     await db.query(query, values);
 
-    return res.status(200).json({ message: "Compte désactivé avec succès" });
+    return res
+      .status(200)
+      .json({ message: "Compte recruteur approuvé avec succès" });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Erreur lors de la désactivation du compte du compte" });
+      .json({ error: "Erreur lors de l'approbation du compte recruteur" });
+  }
+};
+
+exports.desactivateCandidateAccount = async (req, res) => {
+  const { accountId } = req.params;
+
+  try {
+    const query = "UPDATE candidates SET is_active = $1 WHERE user_id = $2";
+    const values = [false, accountId];
+    await db.query(query, values);
+
+    return res
+      .status(200)
+      .json({ message: "Compte candidat désactivé avec succès" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la désactivation du compte candidat" });
+  }
+};
+
+exports.desactivateRecruiterAccount = async (req, res) => {
+  const { accountId } = req.params;
+
+  try {
+    const query = "UPDATE recruiters SET is_active = $1 WHERE user_id = $2";
+    const values = [false, accountId];
+    await db.query(query, values);
+
+    return res
+      .status(200)
+      .json({ message: "Compte recruteur désactivé avec succès" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la désactivation du compte recruteur" });
   }
 };
 
@@ -66,7 +108,9 @@ exports.unapproveJobOffer = async (req, res) => {
     const values = [false, consultantId, jobId];
     await db.query(query, values);
 
-    return res.status(200).json({ message: "Annonce désapprouvée avec succès" });
+    return res
+      .status(200)
+      .json({ message: "Annonce désapprouvée avec succès" });
   } catch (error) {
     console.error(error);
     return res
@@ -84,7 +128,9 @@ exports.unapproveApplication = async (req, res) => {
     const values = [false, null, applicationId];
     await db.query(query, values);
 
-    return res.status(200).json({ message: "Candidature désapprouvée avec succès" });
+    return res
+      .status(200)
+      .json({ message: "Candidature désapprouvée avec succès" });
   } catch (error) {
     console.error(error);
     return res
@@ -129,14 +175,24 @@ exports.approveApplication = async (req, res) => {
   }
 };
 
-exports.getUsers = async (req, res) => {
+exports.getCandidates = async (req, res) => {
   try {
-    const query = "SELECT id, email, role_id, is_active FROM users";
+    const query = `
+      SELECT
+        u.id,
+        u.email,
+        c.is_active,
+        c.first_name,
+        c.last_name
+      FROM users u
+      INNER JOIN candidates c ON u.id = c.user_id
+    `;
+
     const result = await db.query(query);
 
     if (result.rowCount === 0) {
       return res.status(200).json({
-        message: "Aucun utilisateur n'est enregistré",
+        message: "Aucun candidat n'est enregistré",
       });
     }
 
@@ -145,7 +201,36 @@ exports.getUsers = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Erreur lors de la sélection des utilisateurs" });
+      .json({ error: "Erreur lors de la sélection des candidats" });
+  }
+};
+
+exports.getRecruiters = async (req, res) => {
+  try {
+    const query = `
+      SELECT
+        u.id,
+        u.email,
+        r.is_active,
+        r.company_name
+      FROM users u
+      INNER JOIN recruiters r ON u.id = r.user_id
+    `;
+
+    const result = await db.query(query);
+
+    if (result.rowCount === 0) {
+      return res.status(200).json({
+        message: "Aucun recruteur n'est enregistré",
+      });
+    }
+
+    return res.status(200).json(result.rows);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la sélection des recruteurs" });
   }
 };
 
@@ -172,8 +257,7 @@ exports.getJobPostings = async (req, res) => {
 
 exports.getApplications = async (req, res) => {
   try {
-    const query =
-      "SELECT * FROM applications";
+    const query = "SELECT * FROM applications";
     const result = await db.query(query);
 
     if (result.rowCount === 0) {
@@ -216,9 +300,7 @@ exports.deleteJob = async (req, res) => {
     const values = [jobId];
     await db.query(query, values);
 
-    return res
-      .status(200)
-      .json({ message: "L'annonce a bien été supprimée." });
+    return res.status(200).json({ message: "L'annonce a bien été supprimée." });
   } catch (error) {
     console.error(error);
     return res

@@ -14,7 +14,7 @@ const roleValidationCandidate = async (req, res, next) => {
 const checkAccountActivation = async (req, res, next) => {
   const candidateId = req.user.id;
   try {
-    const query = "SELECT is_active FROM users WHERE id = $1";
+    const query = "SELECT is_active FROM candidates WHERE id = $1";
     const values = [candidateId];
     const { rows } = await db.query(query, values);
     const { is_active } = rows[0];

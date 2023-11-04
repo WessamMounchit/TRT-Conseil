@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchData from "../../utils/fetchData";
 import {
-  ActivateAccount,
-  DesactivateAccount,
+  activeCandidateAccount,
+  desactiveCandidateAccount,
   deleteAccount,
-  getUsers,
+  getCandidates,
 } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -13,42 +13,42 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfUsers = () => {
-  const [users, setUsers] = useState({
+const ListOfCandidates = () => {
+  const [candidates, setCandidates] = useState({
     loading: false,
     error: false,
     data: [],
   });
 
-  const [openUsersList, setOpenUsersList] = useState(false);
+  const [openCandidatesList, setOpenCandidatesList] = useState(false);
 
   useEffect(() => {
-    fetchData(setUsers, getUsers);
+    fetchData(setCandidates, getCandidates);
   }, []);
 
-  const handleAccountActivation = async (accountId) => {
+  const handleCandidateActivation = async (accountId) => {
     try {
-      const response = await ActivateAccount(accountId);
+      const response = await activeCandidateAccount(accountId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setUsers, getUsers);
+    fetchData(setCandidates, getCandidates);
   };
 
-  const handleAccountDesactivation = async (accountId) => {
+  const handleCandidateDesactivation = async (accountId) => {
     try {
-      const response = await DesactivateAccount(accountId);
+      const response = await desactiveCandidateAccount(accountId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setUsers, getUsers);
+    fetchData(setCandidates, getCandidates);
   };
 
-  const handleAccountDeletion = async (accountId) => {
+  const handleCandidateDeletion = async (accountId) => {
     try {
       const response = await deleteAccount(accountId);
       toast.success(response.data.message);
@@ -56,58 +56,50 @@ const ListOfUsers = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setUsers, getUsers);
+    fetchData(setCandidates, getCandidates);
   };
 
   return (
     <>
       <h1 className="text-3xl text-center mb-11 mt-32 font-semibold hidden md:block">
-        Liste des utilisateurs
+        Liste des candidats
       </h1>
-      <div className="overflow-x-auto hidden md:block mx-24 h-96">
+      <div className="overflow-x-auto hidden md:block mx-24">
         <table className="table">
           <thead>
             <tr className="bg-neutral uppercase">
               <th>ID</th>
               <th>Email</th>
-              <th>Role</th>
+              <th>Prénom</th>
+              <th>Nom</th>
               <th>Actif</th>
               <th>Supprimer</th>
             </tr>
           </thead>
           <tbody>
-            {users.data?.map((user) => (
-              <tr key={user.id} className="hover">
-                <th>{`${user.id.slice(0, 9)}...`}</th>
-                <td>{user.email}</td>
-                <td>
-                  {user.role_id === 1
-                    ? "Admin"
-                    : user.role_id === 2
-                    ? "Consultant"
-                    : user.role_id === 3
-                    ? "Recruteur"
-                    : user.role_id === 4
-                    ? "Candidat"
-                    : "Inconnu"}
-                </td>
+            {candidates.data?.map((candidate) => (
+              <tr key={candidate.id} className="hover">
+                <th>{`${candidate.id.slice(0, 9)}...`}</th>
+                <td>{candidate.email}</td>
+                <td>{candidate.first_name}</td>
+                <td>{candidate.last_name}</td>
                 <td
                   className="tooltip tooltip-left table-cell pl-[1.4rem]"
                   data-tip={
-                    user.is_active
+                    candidate.is_active
                       ? "Désactiver le compte"
                       : "Activer le compte"
                   }
                 >
-                  {user.is_active ? (
+                  {candidate.is_active ? (
                     <AiFillCheckCircle
                       className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                      onClick={() => handleAccountDesactivation(user.id)}
+                      onClick={() => handleCandidateDesactivation(candidate.id)}
                     />
                   ) : (
                     <BsHourglassSplit
                       className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                      onClick={() => handleAccountActivation(user.id)}
+                      onClick={() => handleCandidateActivation(candidate.id)}
                     />
                   )}
                 </td>
@@ -117,7 +109,7 @@ const ListOfUsers = () => {
                 >
                   <BsFillTrashFill
                     className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                    onClick={() => handleAccountDeletion(user.id)}
+                    onClick={() => handleCandidateDeletion(candidate.id)}
                   />
                 </td>
               </tr>
@@ -127,65 +119,56 @@ const ListOfUsers = () => {
       </div>
 
       {/* MOBILE VIEW */}
-      <div className="flex justify-center items-center mt-24 mb-12 md:hidden">
+      <div className="flex justify-center items-center md:hidden">
         <button
-          onClick={() => setOpenUsersList(!openUsersList)}
-          className="btn btn-primary"
+          onClick={() => setOpenCandidatesList(!openCandidatesList)}
+          className="btn btn-primary w-64 flex justify-between items-center"
         >
-          Liste des utilisateurs{" "}
-          {openUsersList ? (
+          Liste des candidats
+          {openCandidatesList ? (
             <AiFillCaretUp className="text-2xl" />
           ) : (
             <AiOutlineCaretDown className="text-2xl" />
           )}
         </button>
       </div>
-      <div className="flex gap-6 justify-center items-center flex-wrap md:hidden">
-        {openUsersList &&
-          users.data?.map((user) => (
+      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
+        {openCandidatesList &&
+          candidates.data?.map((candidate) => (
             <div
-              key={user.id}
-              className="card w-96 sm:w-60 bg-neutral text-neutral-content md:hidden"
+              key={candidate.id}
+              className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
             >
               <div className="card-body items-center text-center flex gap-3">
-                <h2 className="card-title">{`${user.id.slice(0, 9)}...`}</h2>
-                <p>{user.email}</p>
-                <p>
-                  {user.role_id === 1
-                    ? "Admin"
-                    : user.role_id === 2
-                    ? "Consultant"
-                    : user.role_id === 3
-                    ? "Recruteur"
-                    : user.role_id === 4
-                    ? "Candidat"
-                    : "Inconnu"}
-                </p>
+                <h2 className="card-title">{`${candidate.id.slice(0, 9)}...`}</h2>
+                <p>{candidate.first_name}</p>
+                <p>{candidate.last_name}</p>
+                <p>{candidate.email}</p>
                 <div className="card-actions justify-end mt-8 flex gap-4">
                   <button
                     className="tooltip"
                     data-tip={
-                      user.is_active
+                      candidate.is_active
                         ? "Désactiver le compte"
                         : "Activer le compte"
                     }
                   >
-                    {user.is_active ? (
+                    {candidate.is_active ? (
                       <AiFillCheckCircle
                         className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                        onClick={() => handleAccountDesactivation(user.id)}
+                        onClick={() => handleCandidateDesactivation(candidate.id)}
                       />
                     ) : (
                       <BsHourglassSplit
                         className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                        onClick={() => handleAccountActivation(user.id)}
+                        onClick={() => handleCandidateActivation(candidate.id)}
                       />
                     )}
                   </button>
                   <button className="tooltip" data-tip="Supprimer le compte">
                     <BsFillTrashFill
                       className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                      onClick={() => handleAccountDeletion(user.id)}
+                      onClick={() => handleCandidateDeletion(candidate.id)}
                     />
                   </button>
                 </div>
@@ -197,4 +180,4 @@ const ListOfUsers = () => {
   );
 };
 
-export default ListOfUsers;
+export default ListOfCandidates;
