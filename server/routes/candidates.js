@@ -5,12 +5,14 @@ const {
   applicationValidation,
   completeProfileValidation,
   roleValidationCandidate,
+  checkAccountActivation,
 } = require("../validators/candidate");
 const {
   applyToJob,
   completeCandidateProfile,
   getApprouvedJobPostings,
   getJobsApplied,
+  removeApplication,
 } = require("../controllers/candidate");
 const upload = require("../middlewares/multer-config");
 
@@ -41,6 +43,24 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   roleValidationCandidate,
   getJobsApplied
+);
+
+router.get(
+  "/check-account-activation",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationCandidate,
+  checkAccountActivation,
+  (req, res) => {
+    const { isActive } = req;
+    return res.status(200).json(isActive);
+  }
+);
+
+router.delete(
+  "/remove-application/:jobId",
+  passport.authenticate("jwt", { session: false }),
+  roleValidationCandidate,
+  removeApplication
 );
 
 module.exports = router;

@@ -61,12 +61,6 @@ exports.getActiveCandidatesApplying = async (req, res) => {
     const values = [jobId];
     const result = await db.query(query, values);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucun candidat n'a postulé à cette annonce",
-      });
-    }
-
     return res.status(200).json({
       message: "Candidats sélectionnés avec succès",
       candidates: result.rows,
@@ -90,12 +84,6 @@ exports.getRecruiterJobPostings = async (req, res) => {
 
     const values = [recruiterId];
     const result = await db.query(query, values);
-
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucune annonce postée par ce recruteur",
-      });
-    }
 
     return res.status(200).json({
       message: "Annonces du recruteur sélectionnées avec succès",

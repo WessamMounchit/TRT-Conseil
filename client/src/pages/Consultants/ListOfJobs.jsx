@@ -141,7 +141,7 @@ const ListOfJobs = () => {
             >
               <div className="card-body items-center text-center flex gap-3">
                 <h2 className="card-title">{job.id}</h2>
-                <p>{job.title}</p>
+                <p>{job.job_title}</p>
                 <p>{job.work_location}</p>
                 <p>{job.recruiter_id}</p>
                 <p>{job.description}</p>

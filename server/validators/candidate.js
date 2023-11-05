@@ -14,7 +14,7 @@ const roleValidationCandidate = async (req, res, next) => {
 const checkAccountActivation = async (req, res, next) => {
   const candidateId = req.user.id;
   try {
-    const query = "SELECT is_active FROM candidates WHERE id = $1";
+    const query = "SELECT is_active FROM candidates WHERE user_id = $1";
     const values = [candidateId];
     const { rows } = await db.query(query, values);
     const { is_active } = rows[0];
@@ -24,6 +24,7 @@ const checkAccountActivation = async (req, res, next) => {
         .status(500)
         .json({ error: "Votre compte n'est pas encore activé" });
     } else {
+      req.isActive = is_active;
       next();
     }
   } catch (error) {
@@ -48,6 +49,8 @@ const checkCandidateProfile = async (req, res, next) => {
         error:
           "Veuillez compléter votre profil avant de postuler à une offre d'emploi.",
       });
+    } else {
+      next()
     }
   } catch (error) {
     return res
@@ -109,6 +112,7 @@ const checkIfCandidateAlreadyApplied = async (req, res, next) => {
 
 module.exports = {
   roleValidationCandidate,
+  checkAccountActivation,
   completeProfileValidation: [
     roleValidationCandidate,
     checkAccountActivation,

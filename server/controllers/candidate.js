@@ -20,6 +20,26 @@ exports.applyToJob = async (req, res) => {
   }
 };
 
+exports.removeApplication = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const query = "DELETE FROM applications WHERE job_posting_id = $1";
+    const values = [jobId];
+
+    await db.query(query, values);
+
+    return res.status(201).json({
+      message: "Postulation supprimer avec succès",
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression de la postulation" });
+  }
+};
+
 exports.completeCandidateProfile = async (req, res) => {
   const candidateId = req.user.id;
   const { firstName, lastName } = req.body;
@@ -58,16 +78,7 @@ exports.getApprouvedJobPostings = async (req, res) => {
 
     const result = await db.query(query, values);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Pas d'annonces disponible",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Annonces sélectionnés avec succès",
-      jobPostings: result.rows,
-    });
+    return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     return res
@@ -89,16 +100,7 @@ exports.getJobsApplied = async (req, res) => {
 
     const result = await db.query(query, values);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucune annonce postulée par ce candidat",
-      });
-    }
-
-    return res.status(200).json({
-      message: "Annonces postulées sélectionnés avec succès",
-      jobsApplied: result.rows,
-    });
+    return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     return res

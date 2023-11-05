@@ -190,12 +190,6 @@ exports.getCandidates = async (req, res) => {
 
     const result = await db.query(query);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucun candidat n'est enregistré",
-      });
-    }
-
     return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
@@ -219,12 +213,6 @@ exports.getRecruiters = async (req, res) => {
 
     const result = await db.query(query);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucun recruteur n'est enregistré",
-      });
-    }
-
     return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
@@ -240,12 +228,6 @@ exports.getJobPostings = async (req, res) => {
       "SELECT id, recruiter_id, job_title, work_location, description, is_valid FROM job_postings";
     const result = await db.query(query);
 
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucune annonce n'est enregistrée",
-      });
-    }
-
     return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
@@ -259,12 +241,6 @@ exports.getApplications = async (req, res) => {
   try {
     const query = "SELECT * FROM applications";
     const result = await db.query(query);
-
-    if (result.rowCount === 0) {
-      return res.status(200).json({
-        message: "Aucune candidature n'est enregistrée",
-      });
-    }
 
     return res.status(200).json(result.rows);
   } catch (error) {
