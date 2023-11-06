@@ -1,11 +1,9 @@
 const { Router } = require("express");
 const router = Router();
-const passport = require("passport");
 const {
   applicationValidation,
   completeProfileValidation,
   roleValidationCandidate,
-  checkAccountActivation,
 } = require("../validators/candidate");
 const {
   applyToJob,
@@ -13,19 +11,22 @@ const {
   getApprouvedJobPostings,
   getJobsApplied,
   removeApplication,
+  checkAccountActivation,
+  checkCandidateProfile,
 } = require("../controllers/candidate");
 const upload = require("../middlewares/multer-config");
+const { passportAuth } = require("../middlewares/passport-auth");
 
 router.post(
   "/application/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   applicationValidation,
   applyToJob
 );
 
 router.post(
   "/complete-profile",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   completeProfileValidation,
   upload.single("cv"),
   completeCandidateProfile
@@ -33,32 +34,35 @@ router.post(
 
 router.get(
   "/get-job-postings",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationCandidate,
   getApprouvedJobPostings
 );
 
 router.get(
   "/get-jobs-applied",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationCandidate,
   getJobsApplied
 );
 
 router.get(
   "/check-account-activation",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationCandidate,
-  checkAccountActivation,
-  (req, res) => {
-    const { isActive } = req;
-    return res.status(200).json(isActive);
-  }
+  checkAccountActivation
+);
+
+router.get(
+  "/check-profile-completion",
+  passportAuth,
+  roleValidationCandidate,
+  checkCandidateProfile
 );
 
 router.delete(
   "/remove-application/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationCandidate,
   removeApplication
 );

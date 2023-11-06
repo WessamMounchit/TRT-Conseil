@@ -80,9 +80,9 @@ const ListOfApplications = () => {
             {applications.data?.map((application) => (
               <tr key={application.id} className="hover">
                 <th>{application.id}</th>
-                <td>{`${application.candidate_id.slice(0, 9)}...`}</td>
+                <td>{`${application.candidate_id.slice(0, 8)}...`}</td>
                 <td className="text-center">{application.job_posting_id}</td>
-                <td>{application.consultant_id ? `${application.consultant_id.slice(0, 9)}...` : "Non approuvée"}</td>
+                <td>{application.consultant_id ? `${application.consultant_id.slice(0, 8)}...` : "Non approuvée"}</td>
                 <td
                   className="tooltip tooltip-left table-cell pl-[2.4rem]"
                   data-tip={
@@ -139,9 +139,9 @@ const ListOfApplications = () => {
             >
               <div className="card-body items-center text-center flex gap-3">
                 <h2 className="card-title">{application.id}</h2>
-                <p>{`ID Candidate : ${application.candidate_id.slice(0, 9)}...`}</p>
+                <p>{`ID Candidate : ${application.candidate_id.slice(0, 8)}...`}</p>
                 <p>Job ID : {application.job_posting_id}</p>
-                <p>{application.consultant_id ? `${application.consultant_id.slice(0, 9)}...` : "Non approuvée"}</p>
+                <p>{application.consultant_id ? `${application.consultant_id.slice(0, 8)}...` : "Non approuvée"}</p>
                 <div className="card-actions justify-end mt-8 flex gap-4">
                   <button
                     className="tooltip"

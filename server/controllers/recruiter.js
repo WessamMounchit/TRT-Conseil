@@ -54,17 +54,13 @@ exports.getActiveCandidatesApplying = async (req, res) => {
     const query = `
       SELECT c.*
       FROM candidates c
-      JOIN users u ON c.user_id = u.id
       JOIN applications a ON c.user_id = a.candidate_id
-      WHERE u.is_active = true AND a.job_posting_id = $1`;
+      WHERE c.is_active = true AND a.job_posting_id = $1`;
 
     const values = [jobId];
     const result = await db.query(query, values);
 
-    return res.status(200).json({
-      message: "Candidats sélectionnés avec succès",
-      candidates: result.rows,
-    });
+    return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     return res
@@ -85,14 +81,49 @@ exports.getRecruiterJobPostings = async (req, res) => {
     const values = [recruiterId];
     const result = await db.query(query, values);
 
-    return res.status(200).json({
-      message: "Annonces du recruteur sélectionnées avec succès",
-      jobPostings: result.rows,
-    });
+    return res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
     return res
       .status(500)
       .json({ error: "Erreur lors de la sélection des annonces" });
+  }
+};
+
+exports.checkRecruiterAccountActivation = async (req, res) => {
+  const recruiterId = req.user.id;
+  try {
+    const query = "SELECT is_active FROM recruiters WHERE user_id = $1";
+    const values = [recruiterId];
+    const { rows } = await db.query(query, values);
+    const { is_active } = rows[0];
+
+    return res.status(200).json(is_active);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "La vérification du compte a échoué" });
+  }
+};
+
+exports.checkRecruiterProfile = async (req, res) => {
+  const recruiterId = req.user.id;
+
+  try {
+    const query = "SELECT * FROM recruiters WHERE user_id = $1";
+    const values = [recruiterId];
+    const { rows } = await db.query(query, values);
+    const { company_name, address } = rows[0];
+
+    if (!company_name || !address) {
+      return res.status(200).json(false);
+    } else {
+      return res.status(200).json(true);
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification du profil a échoué" });
   }
 };

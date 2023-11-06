@@ -84,7 +84,7 @@ const ListOfJobs = () => {
                 <td>{job.job_title}</td>
                 <td>{job.work_location}</td>
                 <td>{`${job.description.slice(0, 15)}...`}</td>
-                <td>{`${job.recruiter_id.slice(0, 9)}...`}</td>
+                <td>{`${job.recruiter_id.slice(0, 8)}...`}</td>
                 <td
                   className="tooltip tooltip-left table-cell pl-[2.4rem]"
                   data-tip={

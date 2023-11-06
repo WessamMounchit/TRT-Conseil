@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const router = Router();
-const passport = require("passport");
 const { roleValidationAdmin } = require("../validators/admin");
 const { consultantRegistration } = require("../controllers/admin");
 const { registerValidation } = require("../validators/auth");
+const { passportAuth } = require("../middlewares/passport-auth");
 
 router.post(
   "/create-consultant",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationAdmin,
   registerValidation,
   consultantRegistration

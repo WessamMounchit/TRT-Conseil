@@ -108,3 +108,40 @@ exports.getJobsApplied = async (req, res) => {
       .json({ error: "Erreur lors de la sélection des annonces" });
   }
 };
+
+exports.checkAccountActivation = async (req, res) => {
+  const candidateId = req.user.id;
+  try {
+    const query = "SELECT is_active FROM candidates WHERE user_id = $1";
+    const values = [candidateId];
+    const { rows } = await db.query(query, values);
+    const { is_active } = rows[0];
+
+    return res.status(200).json(is_active);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification du compte a échoué" });
+  }
+};
+
+exports.checkCandidateProfile = async (req, res) => {
+  const candidateId = req.user.id;
+
+  try {
+    const query = "SELECT * FROM candidates WHERE user_id = $1";
+    const values = [candidateId];
+    const { rows } = await db.query(query, values);
+    const { first_name, last_name, cv } = rows[0];
+
+    if (!first_name || !last_name || !cv) {
+      return res.status(200).json(false);
+    } else {
+      return res.status(200).json(true);
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "La vérification du profil a échoué" });
+  }
+};

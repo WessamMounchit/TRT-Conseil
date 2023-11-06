@@ -78,7 +78,7 @@ const ListOfRecruiters = () => {
           <tbody>
             {recruiters.data?.map((recruiter) => (
               <tr key={recruiter.id} className="hover">
-                <th>{`${recruiter.id.slice(0, 9)}...`}</th>
+                <th>{`${recruiter.id.slice(0, 8)}...`}</th>
                 <td>{recruiter.email}</td>
                 <td>{recruiter.company_name}</td>
                 <td
@@ -138,7 +138,7 @@ const ListOfRecruiters = () => {
               className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
             >
               <div className="card-body items-center text-center flex gap-3">
-                <h2 className="card-title">{`${recruiter.id.slice(0, 9)}...`}</h2>
+                <h2 className="card-title">{`${recruiter.id.slice(0, 8)}...`}</h2>
                 <p>{recruiter.company_name}</p>
                 <p>{recruiter.email}</p>
                 <div className="card-actions justify-end mt-8 flex gap-4">

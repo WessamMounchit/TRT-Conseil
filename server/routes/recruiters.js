@@ -1,37 +1,60 @@
 const { Router } = require("express");
 const router = Router();
-const passport = require("passport");
-const { createJobOffer, completeRecruiterProfile, getActiveCandidatesApplying, getRecruiterJobPostings } = require("../controllers/recruiter");
-const { roleValidationRecruiter } = require("../validators/recruiter");
+const {
+  createJobOffer,
+  completeRecruiterProfile,
+  getActiveCandidatesApplying,
+  getRecruiterJobPostings,
+  checkRecruiterAccountActivation,
+  checkRecruiterProfile,
+} = require("../controllers/recruiter");
+const {
+  roleValidationRecruiter,
+  recruiterCompleteProfileValidation,
+  recruiterCreateJobOfferValidation,
+} = require("../validators/recruiter");
+const { passportAuth } = require("../middlewares/passport-auth");
 
 router.post(
   "/create-job-offer",
-  passport.authenticate("jwt", { session: false }),
-  roleValidationRecruiter,
+  passportAuth,
+  recruiterCreateJobOfferValidation,
   createJobOffer
 );
 
 router.post(
   "/complete-profile",
-  passport.authenticate("jwt", { session: false }),
-  roleValidationRecruiter,
+  passportAuth,
+  recruiterCompleteProfileValidation,
   completeRecruiterProfile
 );
 
 router.get(
   "/get-job-postings",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationRecruiter,
   getRecruiterJobPostings
 );
 
 router.get(
   "/get-candidates/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationRecruiter,
   getActiveCandidatesApplying
 );
 
+router.get(
+  "/check-account-activation",
+  passportAuth,
+  roleValidationRecruiter,
+  checkRecruiterAccountActivation
+);
 
+router.get(
+  "/check-profile-completion",
+  passportAuth,
+  roleValidationRecruiter,
+  checkRecruiterProfile
+);
 
 module.exports = router;

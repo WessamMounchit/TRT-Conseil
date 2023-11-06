@@ -24,7 +24,6 @@ const checkAccountActivation = async (req, res, next) => {
         .status(500)
         .json({ error: "Votre compte n'est pas encore activé" });
     } else {
-      req.isActive = is_active;
       next();
     }
   } catch (error) {
@@ -60,7 +59,7 @@ const checkCandidateProfile = async (req, res, next) => {
 };
 
 //CHECK IF PROFILE IS ALREADY COMPLETE
-const checkIfCandidateProfileComplete = async (req, res, next) => {
+const isCandidateProfileAlreadyComplete = async (req, res, next) => {
   const candidateId = req.user.id;
   try {
     const query = "SELECT * FROM candidates WHERE user_id = $1";
@@ -116,7 +115,7 @@ module.exports = {
   completeProfileValidation: [
     roleValidationCandidate,
     checkAccountActivation,
-    checkIfCandidateProfileComplete,
+    isCandidateProfileAlreadyComplete,
   ],
   applicationValidation: [
     roleValidationCandidate,

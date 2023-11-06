@@ -79,7 +79,7 @@ const ListOfCandidates = () => {
           <tbody>
             {candidates.data?.map((candidate) => (
               <tr key={candidate.id} className="hover">
-                <th>{`${candidate.id.slice(0, 9)}...`}</th>
+                <th>{`${candidate.id.slice(0, 8)}...`}</th>
                 <td>{candidate.email}</td>
                 <td>{candidate.first_name}</td>
                 <td>{candidate.last_name}</td>
@@ -140,7 +140,7 @@ const ListOfCandidates = () => {
               className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
             >
               <div className="card-body items-center text-center flex gap-3">
-                <h2 className="card-title">{`${candidate.id.slice(0, 9)}...`}</h2>
+                <h2 className="card-title">{`${candidate.id.slice(0, 8)}...`}</h2>
                 <p>{candidate.first_name}</p>
                 <p>{candidate.last_name}</p>
                 <p>{candidate.email}</p>

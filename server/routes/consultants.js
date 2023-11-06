@@ -17,7 +17,6 @@ const {
   desactivateRecruiterAccount,
 } = require("../controllers/consultant");
 const router = Router();
-const passport = require("passport");
 const {
   roleValidationConsultant,
   JobPostingValidation,
@@ -25,108 +24,109 @@ const {
   approveRecruiterAccountValidation,
   approveApplicationValidation,
 } = require("../validators/consultant");
+const { passportAuth } = require("../middlewares/passport-auth");
 
 router.post(
   "/approve-candidate/:accountId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   approveCandidatAccountValidation,
   approveCandidateAccount
 );
 
 router.post(
   "/approve-recruiter/:accountId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   approveRecruiterAccountValidation,
   approveRecruiterAccount
 );
 
 router.post(
   "/desactivate-candidate-account/:accountId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   desactivateCandidateAccount
 );
 
 router.post(
   "/desactivate-recruiter-account/:accountId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   desactivateRecruiterAccount
 );
 
 router.post(
   "/approuve-job-posting/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   JobPostingValidation,
   approveJobOffer
 );
 
 router.post(
   "/unapprouve-job-posting/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   unapproveJobOffer
 );
 
 router.post(
   "/unapprouve-application/:applicationId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   unapproveApplication
 );
 
 router.post(
   "/approuve-application/:applicationId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   approveApplicationValidation,
   approveApplication
 );
 
 router.get(
   "/get-candidates",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   getCandidates
 );
 
 router.get(
   "/get-recruiters",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   getRecruiters
 );
 
 router.get(
   "/get-job-postings",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   getJobPostings
 );
 
 router.get(
   "/get-applications",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   getApplications
 );
 
 router.delete(
   "/delete-user/:accountId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   deleteUser
 );
 
 router.delete(
   "/delete-job/:jobId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   deleteJob
 );
 
 router.delete(
   "/delete-application/:applicationId",
-  passport.authenticate("jwt", { session: false }),
+  passportAuth,
   roleValidationConsultant,
   deleteApplication
 );

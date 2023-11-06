@@ -10,6 +10,7 @@ import ConsultantDashboard from './pages/Consultants/ConsultantDashboard'
 import AddConsultant from './pages/Admin/AddConsultant'
 import Header from "./components/Header";
 import CandidateDashboard from './pages/Candidates/CandidateDashboard'
+import RecruiterDashboard from './pages/Recruiters/RecruiterDashboard'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/candidates" element={<CandidateDashboard />} />
       <Route path="/candidates/complete-profile" element={<CompleteCandidatProfile />} />
+      <Route path="/recruiters" element={<RecruiterDashboard />} />
       <Route path="/recruiters/complete-profile" element={<CompleteRecruiterProfile />} />
       <Route path="/recruiters/post-a-job" element={<PostAJob />} />
       <Route path="/consultants" element={<ConsultantDashboard />} />

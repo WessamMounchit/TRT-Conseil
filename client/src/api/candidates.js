@@ -22,6 +22,11 @@ export async function getJobApplied() {
 export async function checkIfActive() {
   return await axiosInstance.get(`/candidates/check-account-activation`);
 }
+//CHECK IF CANDIDATE PROFILE COMPLETE
+
+export async function checkIfCandidateProfileComplete() {
+  return await axiosInstance.get(`/candidates/check-profile-completion`);
+}
 
 //APPLY TO A JOB
 
