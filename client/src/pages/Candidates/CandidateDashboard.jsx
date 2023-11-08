@@ -17,17 +17,18 @@ const CandidateDashboard = () => {
     isActive: false,
     isProfileComplete: false,
     loading: true,
+    error: false
   });
 
   const [jobApplied, setJobApplied] = useState({
     loading: false,
-    error: null,
+    error: false,
     data: [],
   });
 
   const [jobPostings, setJobPostings] = useState({
     loading: false,
-    error: null,
+    error: false,
     data: [],
   });
 
@@ -40,19 +41,13 @@ const CandidateDashboard = () => {
         setCandidateState({
           isActive: isActiveResponse.data,
           isProfileComplete: isProfileCompleteResponse.data,
-          loading: false,
         });
       })
       .catch(() => {
-        setJobApplied((prevState) => ({
+        setCandidateState((prevState) => ({
           ...prevState,
           loading: false,
-          error: "Une erreur est survenue lors de la vérification du compte.",
-        }));
-        setJobPostings((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: "Une erreur est survenue lors de la vérification du profil.",
+          error: true,
         }));
       });
   }, []);
@@ -68,6 +63,12 @@ const CandidateDashboard = () => {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
+  } else if (candidateState.error || jobApplied.error || jobPostings.error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="font-semibold text-2xl">Une erreur est survenue...</h1>
+      </div>
+    )
   }
 
   if (candidateState.isActive) {

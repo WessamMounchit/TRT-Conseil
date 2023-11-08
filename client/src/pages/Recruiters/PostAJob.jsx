@@ -1,8 +1,10 @@
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { createJobOffer } from "../../api/recruiters";
+import { BsFillSendCheckFill } from "react-icons/bs";
 
 export default function PostAJob() {
+  const [loading, setloading] = useState(false);
   const [inputs, setInputs] = useState({
     jobTitle: "",
     workLocation: "",
@@ -15,6 +17,7 @@ export default function PostAJob() {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const handleSubmit = async (event) => {
+    setloading(true);
     event.preventDefault();
 
     try {
@@ -25,7 +28,9 @@ export default function PostAJob() {
       });
 
       toast.success(response.data.message);
+      setloading(false);
     } catch (error) {
+      setloading(false);
       console.error(error.message);
       toast.error(error.response.data.error);
     }
@@ -67,7 +72,14 @@ export default function PostAJob() {
         id="description"
         name="description"
       ></textarea>
-      <button className="btn btn-primary mt-5 w-44">Poster</button>
+      <button className="btn btn-primary mt-5 w-44">
+        Poster
+        {loading ? (
+          <span className="loading loading-spinner ml-2"></span>
+        ) : (
+          <BsFillSendCheckFill className="text-xl ml-2" />
+        )}
+      </button>
     </form>
   );
 }

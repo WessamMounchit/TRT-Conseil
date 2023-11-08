@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -15,13 +16,16 @@ export default function SignUp() {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
 
   const handleSubmit = async (event) => {
+    setLoading(true);
     event.preventDefault();
 
     try {
       const response = await register({ email, password, role });
 
       toast.success(response.data.message);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(error.message);
       toast.error(error.response.data.error);
     }
@@ -32,7 +36,9 @@ export default function SignUp() {
       className="flex flex-col gap-6 justify-center items-center h-[100vh]"
       onSubmit={handleSubmit}
     >
-      <h1 className="font-semibold text-xl sm:text-3xl mb-4">Inscription à TRT Conseil</h1>
+      <h1 className="font-semibold text-xl sm:text-3xl mb-4">
+        Inscription à TRT Conseil
+      </h1>
       <input
         required
         id="email"
@@ -40,14 +46,14 @@ export default function SignUp() {
         type="text"
         placeholder="Email"
         className="input input-bordered w-full max-w-sm sm:max-w-md"
-        onChange={e => onChange(e)}
+        onChange={(e) => onChange(e)}
         value={email}
       />
       <input
         required
         type="text"
         value={password}
-        onChange={e => onChange(e)}
+        onChange={(e) => onChange(e)}
         id="password"
         name="password"
         placeholder="Mot de passe"
@@ -57,7 +63,7 @@ export default function SignUp() {
         className="select select-bordered w-full max-w-sm sm:max-w-md"
         name="role"
         value={role}
-        onChange={e => onChange(e)}
+        onChange={(e) => onChange(e)}
       >
         <option disabled value="">
           Choisissez votre rôle
@@ -65,7 +71,10 @@ export default function SignUp() {
         <option value="4">Candidat</option>
         <option value="3">Recruteur</option>
       </select>
-      <button className="btn btn-primary mt-5 w-44">Se connecter</button>
+      <button className="btn btn-primary mt-5 w-44 ml-2">
+        Se connecter
+        {loading && <span className="loading loading-spinner ml-2"></span>}
+      </button>
     </form>
   );
 }
