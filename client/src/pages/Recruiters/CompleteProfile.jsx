@@ -45,7 +45,7 @@ export default function CompleteRecruiterProfile() {
         name="companyName"
         type="text"
         placeholder="Nom de l'entrprise"
-        className="input input-bordered w-full max-w-sm sm:max-w-md"
+        className="input input-bordered w-full max-w-xs sm:max-w-md"
         onChange={(e) => onChange(e)}
         value={companyName}
       />
@@ -57,9 +57,9 @@ export default function CompleteRecruiterProfile() {
         id="address"
         name="address"
         placeholder="Adresse"
-        className="input input-bordered w-full max-w-sm sm:max-w-md"
+        className="input input-bordered w-full max-w-xs sm:max-w-md"
       />
-      <button className="btn btn-primary mt-5 w-44">
+      <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
         Enregistrer
         {loading ? (
           <span className="loading loading-spinner ml-2"></span>

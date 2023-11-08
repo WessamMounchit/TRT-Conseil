@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ListOfJobApplied from "./ListOfJobApplied";
-import ListOfJobPostings from "./ListOfJobPostings";
+import ListOfJobApplied from "../../components/Candidates/ListOfJobApplied";
+import ListOfJobPostings from "../../components/Candidates/ListOfJobPostings";
 import {
   checkIfActive,
   checkIfCandidateProfileComplete,
@@ -35,6 +35,7 @@ const CandidateDashboard = () => {
   useEffect(() => {
     fetchData(setJobApplied, getJobApplied);
     fetchData(setJobPostings, getJobPostings);
+    setCandidateState((candidateState) => ({...candidateState, loading: true}))
 
     Promise.all([checkIfActive(), checkIfCandidateProfileComplete()])
       .then(([isActiveResponse, isProfileCompleteResponse]) => {
@@ -74,8 +75,8 @@ const CandidateDashboard = () => {
   if (candidateState.isActive) {
     if (candidateState.isProfileComplete) {
       return (
-        <div className="flex flex-col justify-center items-center mt-64 gap-3">
-          <h1 className="font-semibold text-2xl mb-5 text-center">
+        <div className="flex flex-col justify-center items-center mt-56 gap-3">
+          <h1 className="font-semibold text-lg sm:text-2xl mb-5 text-center">
             Bienvenue dans le dashboard du candidat :
           </h1>
           <ListOfJobPostings

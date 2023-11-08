@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import fetchData from "../../utils/fetchData";
 import {
-  ApproveApplication,
-  UnapproveApplication,
-  deleteApplication,
-  getApplications,
+  ApproveJob,
+  UnapproveJob,
+  deleteJob,
+  getJobPostings,
 } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -13,124 +13,118 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfApplications = () => {
-  const [applications, setApplications] = useState({
+const ListOfJobs = () => {
+  const [jobPostings, setJobPostings] = useState({
     loading: false,
     error: false,
     data: [],
   });
 
-  const [openApplicationsList, setOpenApplicationsList] = useState(false);
+  const [openJobsList, setOpenJobsList] = useState(false);
 
   useEffect(() => {
-    fetchData(setApplications, getApplications);
+    fetchData(setJobPostings, getJobPostings);
   }, []);
 
-  const handleApplicationsActivation = async (applicationsId) => {
+  const handleJobActivation = async (jobId) => {
     try {
-      const response = await ApproveApplication(applicationsId);
+      const response = await ApproveJob(jobId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setJobPostings, getJobPostings);
   };
 
-  const handleApplicationsDesactivation = async (applicationsId) => {
+  const handleJobDesactivation = async (jobId) => {
     try {
-      const response = await UnapproveApplication(applicationsId);
+      const response = await UnapproveJob(jobId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setJobPostings, getJobPostings);
   };
 
-  const handleApplicationsDeletion = async (applicationsId) => {
+  const handleJobDeletion = async (jobId) => {
     try {
-      const response = await deleteApplication(applicationsId);
+      const response = await deleteJob(jobId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    fetchData(setJobPostings, getJobPostings);
   };
 
   let contentDesktop;
-  if (applications.loading) {
+  if (jobPostings.loading) {
     contentDesktop = (
       <div className="flex justify-center items-center">
         <span className="loading loading-spinner"></span>
       </div>
     );
-  } else if (applications.error) {
+  } else if (jobPostings.error) {
     contentDesktop = (
       <p className="font-semibold text-xl text-center my-4">
         Une erreur est survenue...
       </p>
     );
-  } else if (applications.data?.length === 0) {
+  } else if (jobPostings.data?.length === 0) {
     contentDesktop = (
       <p className="font-semibold text-xl text-center my-4">
         Aucun candidat disponible
       </p>
     );
-  } else if (applications.data?.length > 0) {
+  } else if (jobPostings.data?.length > 0) {
     contentDesktop = (
       <table className="table">
         <thead>
-          <tr className="bg-neutral uppercase">
+          <tr className="bg-neutral uppercase text-white">
             <th>ID</th>
-            <th>Candidat ID</th>
-            <th>Job ID</th>
-            <th>Consultant ID</th>
+            <th>Titre</th>
+            <th>Lieu</th>
+            <th>Description</th>
+            <th>Recruteur</th>
             <th>Validation</th>
             <th>Supprimer</th>
           </tr>
         </thead>
         <tbody>
-          {applications.data?.map((application) => (
-            <tr key={application.id} className="hover">
-              <th>{application.id}</th>
-              <td>{`${application.candidate_id.slice(0, 8)}...`}</td>
-              <td className="text-center">{application.job_posting_id}</td>
-              <td>
-                {application.consultant_id
-                  ? `${application.consultant_id.slice(0, 8)}...`
-                  : "Non approuvée"}
-              </td>
+          {jobPostings.data?.map((job) => (
+            <tr key={job.id} className="hover">
+              <th>{job.id}</th>
+              <td>{job.job_title}</td>
+              <td>{job.work_location}</td>
+              <td>{`${job.description.slice(0, 15)}...`}</td>
+              <td>{`${job.recruiter_id.slice(0, 8)}...`}</td>
               <td
                 className="tooltip tooltip-left table-cell pl-[2.4rem]"
                 data-tip={
-                  application.is_valid
-                    ? "Désapprouver la candidature"
-                    : "Approuver la candidature"
+                  job.is_valid ? "Désactiver l'annonce" : "Activer l'annonce"
                 }
               >
-                {application.is_valid ? (
+                {job.is_valid ? (
                   <AiFillCheckCircle
                     className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                    onClick={() =>
-                      handleApplicationsDesactivation(application.id)
-                    }
+                    onClick={() => handleJobDesactivation(job.id)}
                   />
                 ) : (
                   <BsHourglassSplit
                     className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                    onClick={() => handleApplicationsActivation(application.id)}
+                    onClick={() => handleJobActivation(job.id)}
                   />
                 )}
               </td>
               <td
                 className="tooltip tooltip-left table-cell pl-[2.2rem]"
-                data-tip="Supprimer la candidature"
+                data-tip="Supprimer l'annonce"
               >
                 <BsFillTrashFill
                   className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                  onClick={() => handleApplicationsDeletion(application.id)}
+                  onClick={() => handleJobDeletion(job.id)}
                 />
               </td>
             </tr>
@@ -141,66 +135,59 @@ const ListOfApplications = () => {
   }
 
   let contentMobile;
-  if (applications.loading && openApplicationsList) {
+  if (jobPostings.loading && openJobsList) {
     contentMobile = (
       <div className="flex justify-center items-center">
         <span className="loading loading-spinner"></span>
       </div>
     );
-  } else if (applications.error && openApplicationsList) {
+  } else if (jobPostings.error && openJobsList) {
     contentMobile = (
       <p className="font-semibold text-xl text-center my-4">
         Une erreur est survenue...
       </p>
     );
-  } else if (applications.data?.length === 0 && openApplicationsList) {
+  } else if (jobPostings.data?.length === 0 && openJobsList) {
     contentMobile = (
       <p className="font-semibold text-xl text-center my-4">
         Aucun candidat disponible
       </p>
     );
-  } else if (applications.data?.length > 0 && openApplicationsList) {
-    contentMobile = applications.data?.map((application) => (
+  } else if (jobPostings.data?.length > 0 && openJobsList) {
+    contentMobile = jobPostings.data?.map((job) => (
       <div
-        key={application.id}
-        className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
+        key={job.id}
+        className="card w-80 bg-neutral text-neutral-content md:hidden mb-11"
       >
         <div className="card-body items-center text-center flex gap-3">
-          <h2 className="card-title">{application.id}</h2>
-          <p>{`ID Candidate : ${application.candidate_id.slice(0, 8)}...`}</p>
-          <p>Job ID : {application.job_posting_id}</p>
-          <p>
-            {application.consultant_id
-              ? `${application.consultant_id.slice(0, 8)}...`
-              : "Non approuvée"}
-          </p>
+          <h2 className="card-title">{job.id}</h2>
+          <p>{job.job_title}</p>
+          <p>{job.work_location}</p>
+          <p>{job.recruiter_id}</p>
+          <p>{job.description}</p>
           <div className="card-actions justify-end mt-8 flex gap-4">
             <button
               className="tooltip"
               data-tip={
-                application.is_valid
-                  ? "Désapprouver la candidature"
-                  : "Approuver la candidature"
+                job.is_valid ? "Désactiver l'annonce" : "Activer l'annonce"
               }
             >
-              {application.is_valid ? (
+              {job.is_valid ? (
                 <AiFillCheckCircle
                   className="cursor-pointer text-green-600 text-xl hover:text-emerald-400"
-                  onClick={() =>
-                    handleApplicationsDesactivation(application.id)
-                  }
+                  onClick={() => handleJobDesactivation(job.id)}
                 />
               ) : (
                 <BsHourglassSplit
                   className="cursor-pointer text-amber-400 text-xl hover:text-yellow-200"
-                  onClick={() => handleApplicationsActivation(application.id)}
+                  onClick={() => handleJobActivation(job.id)}
                 />
               )}
             </button>
-            <button className="tooltip" data-tip="Supprimer la candidature">
+            <button className="tooltip" data-tip="Supprimer l'annonce">
               <BsFillTrashFill
                 className="cursor-pointer text-red-600 text-xl hover:text-red-300"
-                onClick={() => handleApplicationsDeletion(application.id)}
+                onClick={() => handleJobDeletion(job.id)}
               />
             </button>
           </div>
@@ -211,32 +198,32 @@ const ListOfApplications = () => {
 
   return (
     <>
-      <h1 className="text-3xl text-center mb-11 mt-32 font-semibold hidden md:block">
-        Liste des candidatures
+      <h1 className="text-3xl text-center font-semibold hidden md:block">
+        Liste des annonces
       </h1>
-      <div className="overflow-x-auto hidden mb-32 md:block mx-16">
+      <div className="overflow-x-auto hidden md:block mx-16">
         {contentDesktop}
       </div>
 
       {/* MOBILE VIEW */}
       <div className="flex justify-center items-center md:hidden">
         <button
-          onClick={() => setOpenApplicationsList(!openApplicationsList)}
+          onClick={() => setOpenJobsList(!openJobsList)}
           className="btn btn-primary w-64 flex justify-between items-center"
         >
-          Liste des candidatures
-          {openApplicationsList ? (
+          Liste des annonces
+          {openJobsList ? (
             <AiFillCaretUp className="text-2xl" />
           ) : (
             <AiOutlineCaretDown className="text-2xl" />
           )}
         </button>
       </div>
-      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col justify-center items-center flex-wrap md:hidden">
         {contentMobile}
       </div>
     </>
   );
 };
 
-export default ListOfApplications;
+export default ListOfJobs;

@@ -8,7 +8,7 @@ import {
   getJobs,
 } from "../../api/recruiters";
 import fetchData from "../../utils/fetchData";
-import ListOfJobs from "./ListOfJobs";
+import ListOfJobs from "../../components/Recruiters/ListOfJobs";
 import { BsHourglassSplit } from "react-icons/bs";
 
 const RecruiterDashboard = () => {
@@ -27,6 +27,7 @@ const RecruiterDashboard = () => {
 
   useEffect(() => {
     fetchData(setJobPostings, getJobs);
+    setRecruiterState((recruiterState) => ({...recruiterState, loading: true}))
 
     Promise.all([checkIfRecruiterActive(), checkIfRecruiterProfileComplete()])
       .then(([isActiveResponse, isProfileCompleteResponse]) => {
@@ -61,7 +62,7 @@ const RecruiterDashboard = () => {
   if (recruiterState.isActive) {
     if (recruiterState.isProfileComplete) {      return (
         <div className="flex flex-col justify-center items-center mt-64 gap-3">
-          <h1 className="font-semibold text-2xl mb-5 text-center">
+          <h1 className="font-semibold text-lg md:text-2xl mb-5 text-center">
             Bienvenue dans le dashboard du recruteur :
           </h1>
           <Link to="/recruiters/post-a-job">

@@ -82,7 +82,7 @@ const ListOfRecruiters = () => {
     contentDesktop = (
       <table className="table">
         <thead>
-          <tr className="bg-neutral uppercase">
+          <tr className="bg-neutral uppercase text-white">
             <th>ID</th>
             <th>Email</th>
             <th>Nom de l&apos;entrprise</th>
@@ -156,7 +156,7 @@ const ListOfRecruiters = () => {
       recruiters.data?.map((recruiter) => (
         <div
           key={recruiter.id}
-          className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
+          className="card w-80 bg-neutral text-neutral-content md:hidden mb-11"
         >
           <div className="card-body items-center text-center flex gap-3">
             <h2 className="card-title">{`${recruiter.id.slice(0, 8)}...`}</h2>
@@ -197,7 +197,7 @@ const ListOfRecruiters = () => {
 
   return (
     <>
-      <h1 className="text-3xl text-center mb-11 mt-32 font-semibold hidden md:block">
+      <h1 className="text-3xl text-center font-semibold hidden md:block">
         Liste des recruteurs
       </h1>
       <div className="overflow-x-auto hidden md:block mx-24">
@@ -218,7 +218,7 @@ const ListOfRecruiters = () => {
           )}
         </button>
       </div>
-      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col justify-center items-center flex-wrap md:hidden">
         {contentMobile}
       </div>
     </>

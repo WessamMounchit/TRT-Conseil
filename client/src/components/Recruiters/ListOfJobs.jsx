@@ -4,6 +4,7 @@ import { MdOutlineSupervisorAccount } from "react-icons/Md";
 import { AiFillCaretUp } from "react-icons/ai";
 import fetchData from "../../utils/fetchData";
 import { getCandidates } from "../../api/recruiters";
+import { BsHourglassSplit } from "react-icons/bs";
 
 const ListOfJobs = ({ jobPostings }) => {
   const [openJobPostingsList, setOpenJobPostingsList] = useState(false);
@@ -44,19 +45,27 @@ const ListOfJobs = ({ jobPostings }) => {
       jobPostings.data?.map((job) => (
         <div
           key={job.id}
-          className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
+          className="card w-80 md:w-full bg-neutral text-neutral-content mb-11"
         >
           <div className="card-body items-center text-center flex gap-3">
             <h2 className="card-title">{job.job_title}</h2>
             <p>{job.work_location}</p>
             <p>{job.description}</p>
             <div className="card-actions justify-end mt-8 flex gap-4">
-              <button
-                className="btn btn-secondary flex justify-between items-center"
-                onClick={() => onClick(job.id)}
-              >
-                Voir candidats <MdOutlineSupervisorAccount />
-              </button>
+              {job.is_valid ? (
+                <button
+                  className="btn btn-secondary flex justify-between items-center"
+                  onClick={() => onClick(job.id)}
+                >
+                  Voir candidats <MdOutlineSupervisorAccount />
+                </button>
+              ) : (
+                <button
+                  className="btn btn-disabled flex justify-between items-center"
+                >
+                  <p className="text-white">En attente de validation</p> <BsHourglassSplit className="text-amber-400 text-2xl" />
+                </button>
+              )}
               <dialog id="my_modal_2" className="modal">
                 <div className="modal-box bg-secondary">
                   <form method="dialog">
@@ -102,7 +111,7 @@ const ListOfJobs = ({ jobPostings }) => {
           )}
         </button>
       </div>
-      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col justify-center items-center flex-wrap">
         {content}
       </div>
     </>

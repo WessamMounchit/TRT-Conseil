@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { applyToJob } from "../../api/candidates";
-import { AiOutlineCaretDown } from "react-icons/ai";
-import { BsFillSendCheckFill } from "react-icons/bs";
-import { AiFillCaretUp } from "react-icons/ai";
+import { removeApplication } from "../../api/candidates";
 import { toast } from "react-toastify";
+import { AiOutlineCaretDown } from "react-icons/ai";
+import { IoIosRemoveCircleOutline } from "react-icons/Io";
+import { AiFillCaretUp } from "react-icons/ai";
 
-const ListOfJobPostings = ({ jobPostings, refreshData }) => {
-  const [openJobPostingsList, setOpenJobPostingsList] = useState(false);
+const ListOfJobApplied = ({ jobApplied, refreshData }) => {
+  const [openJobAppliedList, setOpenJobAppliedList] = useState(false);
 
-  const handleJobApplication = async (jobId) => {
+  const handleRemoveApplication = async (jobId) => {
     try {
-      const response = await applyToJob(jobId);
+      const response = await removeApplication(jobId);
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response.data.error);
@@ -20,31 +20,31 @@ const ListOfJobPostings = ({ jobPostings, refreshData }) => {
   };
 
   let content;
-  if (jobPostings.loading && openJobPostingsList) {
+  if (jobApplied.loading && openJobAppliedList) {
     content = (
       <div className="flex justify-center items-center">
         <span className="loading loading-spinner"></span>
       </div>
     );
-  } else if (jobPostings.error && openJobPostingsList) {
+  } else if (jobApplied.error && openJobAppliedList) {
     content = (
       <p className="font-semibold text-xl text-center my-4">
         Une erreur est survenue...
       </p>
     );
-  } else if (jobPostings.data?.length === 0 && openJobPostingsList) {
+  } else if (jobApplied.data?.length === 0 && openJobAppliedList) {
     content = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucune Annonce disponible
+        Aucune Annonce postulée
       </p>
     );
-  } else if (jobPostings.data?.length > 0) {
+  } else if (jobApplied.data?.length > 0) {
     content =
-      openJobPostingsList &&
-      jobPostings.data?.map((job) => (
+      openJobAppliedList &&
+      jobApplied.data?.map((job) => (
         <div
           key={job.id}
-          className="card w-96 h-72 bg-neutral text-neutral-content md:hidden mb-11"
+          className="card w-80 bg-neutral text-neutral-content md:hidden mb-11"
         >
           <div className="card-body items-center text-center flex gap-3">
             <h2 className="card-title">{job.job_title}</h2>
@@ -52,10 +52,10 @@ const ListOfJobPostings = ({ jobPostings, refreshData }) => {
             <p>{job.description}</p>
             <div className="card-actions justify-end mt-8 flex gap-4">
               <button
-                onClick={() => handleJobApplication(job.id)}
-                className="btn btn-secondary flex justify-between items-center"
+                onClick={() => handleRemoveApplication(job.id)}
+                className="btn btn-error flex justify-between items-center"
               >
-                Postuler <BsFillSendCheckFill />
+                Postuler <IoIosRemoveCircleOutline className="text-xl" />
               </button>
             </div>
           </div>
@@ -67,22 +67,22 @@ const ListOfJobPostings = ({ jobPostings, refreshData }) => {
     <>
       <div className="flex justify-center items-center">
         <button
-          onClick={() => setOpenJobPostingsList(!openJobPostingsList)}
+          onClick={() => setOpenJobAppliedList(!openJobAppliedList)}
           className="btn btn-primary w-64 flex justify-between items-center"
         >
-          Annonces non-postulées
-          {openJobPostingsList ? (
+          Annonces postulées
+          {openJobAppliedList ? (
             <AiFillCaretUp className="text-2xl" />
           ) : (
             <AiOutlineCaretDown className="text-2xl" />
           )}
         </button>
       </div>
-      <div className="flex flex-col gap-6 justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col justify-center items-center flex-wrap md:hidden">
         {content}
       </div>
     </>
   );
 };
 
-export default ListOfJobPostings;
+export default ListOfJobApplied;

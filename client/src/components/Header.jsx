@@ -44,16 +44,18 @@ const Header = () => {
     <>
       {isAuth && (
         <div>
-          <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 font-semibold absolute top-4 left-4 text-sm sm:text-base">
+          <div className="flex flex-col sm:flex-row items-start gap-1 sm:gap-3 font-semibold absolute top-4 left-4 text-sm sm:text-base">
             <p>Connecté en tant que : </p>
             <p>
               {roleText} ({email})
             </p>
           </div>
-          <FiLogOut
-            className="text-2xl absolute top-4 right-4 cursor-pointer hover:text-white"
-            onClick={(e) => logout(e)}
-          />
+          <div className="absolute top-4 right-4 tooltip tooltip-left" data-tip="Se déconnecter">
+            <FiLogOut
+              className="text-2xl  cursor-pointer hover:text-slate-500"
+              onClick={(e) => logout(e)}
+            />
+          </div>
         </div>
       )}
     </>

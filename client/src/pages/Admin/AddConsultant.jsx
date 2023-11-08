@@ -47,7 +47,7 @@ export default function AddConsultant() {
           name="email"
           type="text"
           placeholder="Email"
-          className="input input-bordered w-full max-w-sm sm:max-w-md"
+          className="input input-bordered w-full max-w-xs sm:max-w-md"
           onChange={(e) => onChange(e)}
           value={email}
         />
@@ -59,9 +59,9 @@ export default function AddConsultant() {
           id="password"
           name="password"
           placeholder="Mot de passe"
-          className="input input-bordered w-full max-w-sm sm:max-w-md"
+          className="input input-bordered w-full max-w-xs sm:max-w-md"
         />
-        <button className="btn btn-primary mt-5 w-44">
+        <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
           Ajouter
           {loading ? (
             <span className="loading loading-spinner ml-2"></span>
