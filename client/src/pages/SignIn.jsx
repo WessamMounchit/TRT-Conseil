@@ -78,19 +78,15 @@ const SignIn = () => {
           className="input input-bordered w-full"
         />
         {showPassword ? (
-          <div className="absolute right-4 sm:tooltip tooltip-top" data-tip="Cacher">
-            <AiFillEyeInvisible
-              className="text-xl cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </div>
+          <AiFillEyeInvisible
+            className="absolute right-4 text-xl cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          />
         ) : (
-          <div className="absolute right-4 sm:tooltip tooltip-top" data-tip="Montrer">
-            <AiFillEye
-              className="text-xl cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </div>
+          <AiFillEye
+            className="absolute right-4 text-xl cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          />
         )}
       </div>
       <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
