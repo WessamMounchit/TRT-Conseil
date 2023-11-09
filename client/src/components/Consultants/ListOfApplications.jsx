@@ -75,7 +75,7 @@ const ListOfApplications = () => {
   } else if (applications.data?.length === 0) {
     contentDesktop = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucune candidature disponible
       </p>
     );
   } else if (applications.data?.length > 0) {
@@ -156,7 +156,7 @@ const ListOfApplications = () => {
   } else if (applications.data?.length === 0 && openApplicationsList) {
     contentMobile = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucune candidature disponible
       </p>
     );
   } else if (applications.data?.length > 0 && openApplicationsList) {

@@ -8,9 +8,10 @@ export default function CompleteRecruiterProfile() {
   const [inputs, setInputs] = useState({
     companyName: "",
     address: "",
+    description: "",
   });
 
-  const { companyName, address } = inputs;
+  const { companyName, address, description } = inputs;
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -20,7 +21,11 @@ export default function CompleteRecruiterProfile() {
     event.preventDefault();
 
     try {
-      const response = await completeRecruiterProfile({ companyName, address });
+      const response = await completeRecruiterProfile({
+        companyName,
+        address,
+        description,
+      });
 
       toast.success(response.data.message);
       setloading(false);
@@ -33,10 +38,10 @@ export default function CompleteRecruiterProfile() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center h-[100vh]"
+      className="flex flex-col gap-6 justify-center items-center mt-32"
       onSubmit={handleSubmit}
     >
-      <h1 className="font-semibold text-xl sm:text-3xl mb-4">
+      <h1 className="font-semibold text-xl sm:text-xl mb-4">
         Complétez votre profil
       </h1>
       <input
@@ -58,6 +63,15 @@ export default function CompleteRecruiterProfile() {
         name="address"
         placeholder="Adresse"
         className="input input-bordered w-full max-w-xs sm:max-w-md"
+      />
+      <textarea
+        required
+        className="textarea textarea-bordered w-full max-w-xs sm:max-w-md"
+        placeholder="Description"
+        id="description"
+        name="description"
+        value={description}
+        onChange={(e) => onChange(e)}
       />
       <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
         Enregistrer

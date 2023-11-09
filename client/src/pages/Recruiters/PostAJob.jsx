@@ -38,7 +38,7 @@ export default function PostAJob() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center h-[100vh]"
+      className="flex flex-col gap-6 justify-center items-center mt-32"
       onSubmit={handleSubmit}
     >
       <h1 className="font-semibold text-xl sm:text-3xl mb-4">

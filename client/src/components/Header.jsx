@@ -44,7 +44,7 @@ const Header = () => {
     <>
       {isAuth && (
         <div>
-          <div className="flex flex-col sm:flex-row items-start gap-1 sm:gap-3 font-semibold absolute top-4 left-4 text-sm sm:text-base">
+          <div className="flex flex-col sm:flex-row items-start gap-1 sm:gap-3 font-semibold ml-4 mt-4 text-sm sm:text-base">
             <p>Connecté en tant que : </p>
             <p>
               {roleText} ({email})

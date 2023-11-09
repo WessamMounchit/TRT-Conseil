@@ -46,7 +46,7 @@ export default function CompleteCandidatProfile() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center h-[100vh]"
+      className="flex flex-col gap-6 justify-center items-center mt-32"
       onSubmit={handleSubmit}
     >
       <h1 className="font-semibold text-xl sm:text-3xl mb-4">
@@ -77,7 +77,6 @@ export default function CompleteCandidatProfile() {
         accept="application/pdf"
         type="file"
         className="file-input file-input-bordered w-full max-w-sm sm:max-w-md"
-        value={cv}
         onChange={(e) => handleCvChange(e)}
         id="cv"
         name="cv"

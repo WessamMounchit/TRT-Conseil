@@ -75,7 +75,7 @@ const ListOfRecruiters = () => {
   } else if (recruiters.data?.length === 0) {
     contentDesktop = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucun recruteur disponible
       </p>
     );
   } else if (recruiters.data?.length > 0) {
@@ -148,7 +148,7 @@ const ListOfRecruiters = () => {
   } else if (recruiters.data?.length === 0 && openRecruitersList) {
     contentMobile = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucun recruteur disponible
       </p>
     );
   } else if (recruiters.data?.length > 0 && openRecruitersList) {

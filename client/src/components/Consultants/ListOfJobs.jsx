@@ -75,7 +75,7 @@ const ListOfJobs = () => {
   } else if (jobPostings.data?.length === 0) {
     contentDesktop = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucune annonce disponible
       </p>
     );
   } else if (jobPostings.data?.length > 0) {
@@ -150,7 +150,7 @@ const ListOfJobs = () => {
   } else if (jobPostings.data?.length === 0 && openJobsList) {
     contentMobile = (
       <p className="font-semibold text-xl text-center my-4">
-        Aucun candidat disponible
+        Aucune annonce disponible
       </p>
     );
   } else if (jobPostings.data?.length > 0 && openJobsList) {

@@ -3,8 +3,11 @@ import { useState } from "react";
 import { createConsultant } from "../../api/admin";
 import { IoMdPersonAdd } from "react-icons/Io";
 import { MdAddBox } from "react-icons/Md";
+import { AiFillEyeInvisible } from "react-icons/ai";
+import { AiFillEye } from "react-icons/ai";
 
 export default function AddConsultant() {
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setloading] = useState(false);
   const [inputs, setInputs] = useState({
     email: "",
@@ -35,7 +38,7 @@ export default function AddConsultant() {
   return (
     <>
       <form
-        className="flex flex-col gap-6 justify-center items-center h-[100vh]"
+        className="flex flex-col gap-6 justify-center items-center mt-32"
         onSubmit={handleSubmit}
       >
         <h1 className="font-semibold text-xl sm:text-3xl mb-4 flex items-center gap-3">
@@ -51,16 +54,29 @@ export default function AddConsultant() {
           onChange={(e) => onChange(e)}
           value={email}
         />
-        <input
-          required
-          type="password"
-          value={password}
-          onChange={(e) => onChange(e)}
-          id="password"
-          name="password"
-          placeholder="Mot de passe"
-          className="input input-bordered w-full max-w-xs sm:max-w-md"
-        />
+        <div className="w-full relative max-w-xs sm:max-w-md flex justify-center items-center">
+          <input
+            required
+            type="password"
+            value={password}
+            onChange={(e) => onChange(e)}
+            id="password"
+            name="password"
+            placeholder="Mot de passe"
+            className="input input-bordered w-full"
+          />
+          {showPassword ? (
+            <AiFillEyeInvisible
+              className="absolute right-4 text-xl cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          ) : (
+            <AiFillEye
+              className="absolute right-4 text-xl cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+        </div>
         <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
           Ajouter
           {loading ? (

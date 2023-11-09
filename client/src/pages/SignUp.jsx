@@ -3,8 +3,11 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { IoIosCreate } from "react-icons/Io";
 import { Link } from "react-router-dom";
+import { AiFillEyeInvisible } from "react-icons/ai";
+import { AiFillEye } from "react-icons/ai";
 
 export default function SignUp() {
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
     email: "",
@@ -35,7 +38,7 @@ export default function SignUp() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center h-screen"
+      className="flex flex-col gap-6 justify-center items-center mt-32"
       onSubmit={handleSubmit}
     >
       <h1 className="font-semibold text-xl sm:text-3xl mb-4">
@@ -51,16 +54,30 @@ export default function SignUp() {
         onChange={(e) => onChange(e)}
         value={email}
       />
+      <div className="w-full relative max-w-xs sm:max-w-md flex justify-center items-center">
       <input
         required
-        type="text"
+        type={showPassword ? "text" : "password"}
         value={password}
         onChange={(e) => onChange(e)}
         id="password"
         name="password"
         placeholder="Mot de passe"
-        className="input input-bordered w-full max-w-xs sm:max-w-md"
+        className="input input-bordered w-full"
       />
+      {showPassword ? (
+        <AiFillEyeInvisible
+          className="absolute right-4 text-xl cursor-pointer"
+          onClick={() => setShowPassword(!showPassword)}
+        />
+      ) : (
+        <AiFillEye
+          className="absolute right-4 text-xl cursor-pointer"
+          onClick={() => setShowPassword(!showPassword)}
+        />
+      )}
+      </div>
+
       <select
         className="select select-bordered w-full max-w-xs sm:max-w-md"
         name="role"
@@ -82,7 +99,9 @@ export default function SignUp() {
         )}
       </button>
       <Link to="/sign-in">
-        <p className="link link-hover text-primary">Vous avez deja un compte ? Connectez-vous</p>
+        <p className="link link-hover text-primary">
+          Vous avez deja un compte ? Connectez-vous
+        </p>
       </Link>
     </form>
   );

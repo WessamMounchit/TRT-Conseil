@@ -60,13 +60,13 @@ const CandidateDashboard = () => {
 
   if (candidateState.loading || jobApplied.loading || jobPostings.loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center mt-32">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   } else if (candidateState.error || jobApplied.error || jobPostings.error) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center mt-32">
         <h1 className="font-semibold text-2xl">Une erreur est survenue...</h1>
       </div>
     )
@@ -75,8 +75,8 @@ const CandidateDashboard = () => {
   if (candidateState.isActive) {
     if (candidateState.isProfileComplete) {
       return (
-        <div className="flex flex-col justify-center items-center mt-56 gap-3">
-          <h1 className="font-semibold text-lg sm:text-2xl mb-5 text-center">
+        <div className="flex flex-col justify-center items-center mt-32 gap-3">
+          <h1 className="font-semibold text-lg sm:text-2xl mb-5 text-center mx-2">
             Bienvenue dans le dashboard du candidat :
           </h1>
           <ListOfJobPostings
@@ -88,7 +88,7 @@ const CandidateDashboard = () => {
       );
     } else {
       return (
-        <div className="flex flex-col justify-center items-center h-screen gap-8">
+        <div className="flex flex-col justify-center items-center mt-32 gap-8">
           <h1 className="font-semibold text-2xl text-center">
             Veuillez compléter votre profil pour accéder aux annonces :
           </h1>
@@ -102,7 +102,7 @@ const CandidateDashboard = () => {
     }
   } else {
     return (
-      <div className="flex flex-col justify-center items-center h-screen gap-8">
+      <div className="flex flex-col justify-center items-center mt-32 gap-8">
         <div className="flex justify-center items-center text-9xl text-amber-400">
           <BsHourglassSplit />
         </div>
