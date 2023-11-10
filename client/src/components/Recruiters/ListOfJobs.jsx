@@ -15,8 +15,8 @@ const ListOfJobs = ({ jobPostings }) => {
   });
 
   const onClick = async (jobId) => {
-    const response = await fetchData(setCandidates, () => getCandidates(jobId));
-    console.log(response);
+    await fetchData(setCandidates, () => getCandidates(jobId));
+
     document.getElementById("my_modal_2").showModal();
   };
 
@@ -60,10 +60,9 @@ const ListOfJobs = ({ jobPostings }) => {
                   Voir candidats <MdOutlineSupervisorAccount />
                 </button>
               ) : (
-                <button
-                  className="btn btn-disabled flex justify-between items-center"
-                >
-                  <p className="text-white">En attente de validation</p> <BsHourglassSplit className="text-amber-400 text-2xl" />
+                <button className="btn btn-disabled flex justify-between items-center">
+                  <p className="text-white">En attente de validation</p>{" "}
+                  <BsHourglassSplit className="text-amber-400 text-2xl" />
                 </button>
               )}
               <dialog id="my_modal_2" className="modal">

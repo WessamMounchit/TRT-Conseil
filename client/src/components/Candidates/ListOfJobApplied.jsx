@@ -44,7 +44,7 @@ const ListOfJobApplied = ({ jobApplied, refreshData }) => {
       jobApplied.data?.map((job) => (
         <div
           key={job.id}
-          className="card w-80 bg-neutral text-neutral-content md:hidden mb-11"
+          className="card w-80 bg-neutral text-neutral-content mb-11"
         >
           <div className="card-body items-center text-center flex gap-3">
             <h2 className="card-title">{job.job_title}</h2>
@@ -78,7 +78,7 @@ const ListOfJobApplied = ({ jobApplied, refreshData }) => {
           )}
         </button>
       </div>
-      <div className="flex flex-col justify-center items-center flex-wrap md:hidden">
+      <div className="flex flex-col justify-center items-center flex-wrap">
         {content}
       </div>
     </>

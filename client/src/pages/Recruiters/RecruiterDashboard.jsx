@@ -47,13 +47,13 @@ const RecruiterDashboard = () => {
 
   if (recruiterState.loading || jobPostings.loading) {
     return (
-      <div className="flex justify-center items-center mt-40">
+      <div className="flex justify-center items-center mt-56">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   } else if (jobPostings.error || recruiterState.error) {
     return (
-      <div className="flex justify-center items-center mt-40">
+      <div className="flex justify-center items-center mt-56">
         <h1 className="font-semibold text-2xl">Une erreur est survenue...</h1>
       </div>
     )
@@ -61,7 +61,7 @@ const RecruiterDashboard = () => {
 
   if (recruiterState.isActive) {
     if (recruiterState.isProfileComplete) {      return (
-        <div className="flex flex-col justify-center items-center mt-40 gap-3">
+        <div className="flex flex-col justify-center items-center mt-56 gap-3">
           <h1 className="font-semibold text-lg md:text-2xl mb-5 text-center mx-6">
             Bienvenue dans le dashboard du recruteur :
           </h1>
@@ -75,7 +75,7 @@ const RecruiterDashboard = () => {
       );
     } else {
       return (
-        <div className="flex flex-col justify-center items-center mt-40 gap-8">
+        <div className="flex flex-col justify-center items-center mt-56 gap-8">
           <h1 className="font-semibold text-2xl text-center">
             Veuillez compléter votre profil pour poster des annonces :
           </h1>
@@ -89,7 +89,7 @@ const RecruiterDashboard = () => {
     }
   } else {
     return (
-      <div className="flex flex-col justify-center items-center mt-40 gap-8">
+      <div className="flex flex-col justify-center items-center mt-56 gap-8">
         <div className="flex justify-center items-center text-9xl text-amber-400">
           <BsHourglassSplit />
         </div>

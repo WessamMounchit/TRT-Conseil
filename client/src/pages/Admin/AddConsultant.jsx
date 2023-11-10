@@ -38,7 +38,7 @@ export default function AddConsultant() {
   return (
     <>
       <form
-        className="flex flex-col gap-6 justify-center items-center mt-32"
+        className="flex flex-col gap-6 justify-center items-center mt-44"
         onSubmit={handleSubmit}
       >
         <h1 className="font-semibold text-xl sm:text-3xl mb-4 flex items-center gap-3">
@@ -50,20 +50,20 @@ export default function AddConsultant() {
           name="email"
           type="text"
           placeholder="Email"
-          className="input input-bordered w-80 sm:max-w-md"
+          className="input input-bordered w-80 sm:w-[32rem]"
           onChange={(e) => onChange(e)}
           value={email}
         />
-        <div className="w-full relative max-w-xs sm:max-w-md flex justify-center items-center">
+        <div className="relative flex justify-center items-center">
           <input
             required
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => onChange(e)}
             id="password"
             name="password"
             placeholder="Mot de passe"
-            className="input input-bordered w-full"
+            className="input input-bordered w-80 sm:w-[32rem]"
           />
           {showPassword ? (
             <AiFillEyeInvisible
@@ -77,7 +77,7 @@ export default function AddConsultant() {
             />
           )}
         </div>
-        <button className="btn btn-primary mt-5 w-80 sm:max-w-md">
+        <button className="btn btn-primary mt-5 w-80 sm:w-[32rem]">
           Ajouter
           {loading ? (
             <span className="loading loading-spinner ml-2"></span>

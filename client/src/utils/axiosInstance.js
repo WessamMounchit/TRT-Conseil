@@ -2,10 +2,9 @@ import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 
 const axiosInstance = axios.create({
-  baseURL:
-    import.meta.env.MODE === "production"
-      ? import.meta.env.VITE_API_URL
-      : "http://localhost:8000",
+  baseURL: import.meta.env.PROD
+  ? import.meta.env.VITE_API_URL
+  : "http://localhost:8000",
   withCredentials: true,
 });
 

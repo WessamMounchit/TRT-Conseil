@@ -50,7 +50,7 @@ export default function PostAJob() {
         name="jobTitle"
         type="text"
         placeholder="Titre de l'annonce"
-        className="input input-bordered w-80 sm:max-w-md"
+        className="input input-bordered w-80 sm:w-[32rem]"
         onChange={(e) => onChange(e)}
         value={jobTitle}
       />
@@ -62,17 +62,17 @@ export default function PostAJob() {
         id="workLocation"
         name="workLocation"
         placeholder="Lieu du travail"
-        className="input input-bordered w-80 sm:max-w-md"
+        className="input input-bordered w-80 sm:w-[32rem]"
       />
       <textarea
-        className="textarea textarea-bordered w-80 sm:max-w-md"
+        className="textarea textarea-bordered w-80 sm:w-[32rem]"
         placeholder="Description"
         value={description}
         onChange={(e) => onChange(e)}
         id="description"
         name="description"
       ></textarea>
-      <button className="btn btn-primary mt-5 w-80 sm:max-w-md">
+      <button className="btn btn-primary mt-5 w-80 sm:w-[32rem]">
         Poster
         {loading ? (
           <span className="loading loading-spinner ml-2"></span>

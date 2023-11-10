@@ -255,10 +255,14 @@ exports.getApplications = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const { accountId } = req.params;
-    const result = await db.query("SELECT cv FROM candidates WHERE user_id = $1", [accountId]);
-    const { cv } = result.rows[0]
-    if (cv) {
-      fs.unlinkSync(cv)
+    const result = await db.query(
+      "SELECT cv FROM candidates WHERE user_id = $1",
+      [accountId]
+    );
+    if (result.rows.length > 0) {
+      const { cv } = result.rows[0];
+
+      cv && fs.unlinkSync(cv);
     }
 
     const query = "DELETE FROM users WHERE id = $1";

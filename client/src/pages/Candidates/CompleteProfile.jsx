@@ -46,7 +46,7 @@ export default function CompleteCandidatProfile() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center mt-28"
+      className="flex flex-col gap-6 justify-center items-center mt-36"
       onSubmit={handleSubmit}
     >
       <h1 className="font-semibold text-xl sm:text-3xl mb-4">
@@ -58,7 +58,7 @@ export default function CompleteCandidatProfile() {
         name="firstName"
         type="text"
         placeholder="Prénom"
-        className="input input-bordered w-80 sm:max-w-md"
+        className="input input-bordered w-80 sm:w-[32rem]"
         onChange={(e) => onChange(e)}
         value={firstName}
       />
@@ -70,18 +70,18 @@ export default function CompleteCandidatProfile() {
         id="lastName"
         name="lastName"
         placeholder="Nom"
-        className="input input-bordered w-80 sm:max-w-md"
+        className="input input-bordered w-80 sm:w-[32rem]"
       />
       <input
         required
         accept="application/pdf"
         type="file"
-        className="file-input file-input-bordered w-80 sm:max-w-md"
+        className="file-input file-input-bordered w-80 sm:w-[32rem]"
         onChange={(e) => handleCvChange(e)}
         id="cv"
         name="cv"
       />
-      <button className="btn btn-primary mt-5 w-80 sm:max-w-md">
+      <button className="btn btn-primary mt-5 w-80 sm:w-[32rem]">
         Enregistrer
         {loading ? (
           <span className="loading loading-spinner ml-2"></span>
