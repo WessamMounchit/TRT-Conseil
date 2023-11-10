@@ -1,7 +1,7 @@
 import { register } from "../api/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { IoIosCreate } from "react-icons/Io";
+import { IoIosCreate } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
@@ -87,8 +87,8 @@ export default function SignUp() {
         <option disabled value="">
           Choisissez votre rôle
         </option>
-        <option value="4">Candidat</option>
-        <option value="3">Recruteur</option>
+        <option value={4}>Candidat</option>
+        <option value={3}>Recruteur</option>
       </select>
       <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md ml-2">
         S&apos;inscrire

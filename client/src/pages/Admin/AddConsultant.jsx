@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { createConsultant } from "../../api/admin";
-import { IoMdPersonAdd } from "react-icons/Io";
-import { MdAddBox } from "react-icons/Md";
+import { IoMdPersonAdd } from "react-icons/io";
+import { MdAddBox } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 
@@ -50,7 +50,7 @@ export default function AddConsultant() {
           name="email"
           type="text"
           placeholder="Email"
-          className="input input-bordered w-full max-w-xs sm:max-w-md"
+          className="input input-bordered w-80 sm:max-w-md"
           onChange={(e) => onChange(e)}
           value={email}
         />
@@ -77,7 +77,7 @@ export default function AddConsultant() {
             />
           )}
         </div>
-        <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
+        <button className="btn btn-primary mt-5 w-80 sm:max-w-md">
           Ajouter
           {loading ? (
             <span className="loading loading-spinner ml-2"></span>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
-import { MdOutlineSupervisorAccount } from "react-icons/Md";
+import { MdOutlineSupervisorAccount } from "react-icons/md";
 import { AiFillCaretUp } from "react-icons/ai";
 import fetchData from "../../utils/fetchData";
 import { getCandidates } from "../../api/recruiters";

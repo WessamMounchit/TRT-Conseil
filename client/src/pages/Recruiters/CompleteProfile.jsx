@@ -38,7 +38,7 @@ export default function CompleteRecruiterProfile() {
 
   return (
     <form
-      className="flex flex-col gap-6 justify-center items-center mt-32"
+      className="flex flex-col gap-6 justify-center items-center mt-24"
       onSubmit={handleSubmit}
     >
       <h1 className="font-semibold text-xl sm:text-xl mb-4">
@@ -50,7 +50,7 @@ export default function CompleteRecruiterProfile() {
         name="companyName"
         type="text"
         placeholder="Nom de l'entrprise"
-        className="input input-bordered w-full max-w-xs sm:max-w-md"
+        className="input input-bordered w-80 sm:max-w-md"
         onChange={(e) => onChange(e)}
         value={companyName}
       />
@@ -62,18 +62,18 @@ export default function CompleteRecruiterProfile() {
         id="address"
         name="address"
         placeholder="Adresse"
-        className="input input-bordered w-full max-w-xs sm:max-w-md"
+        className="input input-bordered w-80 sm:max-w-md"
       />
       <textarea
         required
-        className="textarea textarea-bordered w-full max-w-xs sm:max-w-md"
+        className="textarea textarea-bordered w-80 sm:max-w-md"
         placeholder="Description"
         id="description"
         name="description"
         value={description}
         onChange={(e) => onChange(e)}
       />
-      <button className="btn btn-primary mt-5 w-full max-w-xs sm:max-w-md">
+      <button className="btn btn-primary mt-5 w-80 sm:max-w-md">
         Enregistrer
         {loading ? (
           <span className="loading loading-spinner ml-2"></span>

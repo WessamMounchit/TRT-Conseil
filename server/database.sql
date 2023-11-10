@@ -1,5 +1,7 @@
 CREATE DATABASE TRT;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE roles (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL
@@ -12,7 +14,6 @@ CREATE TABLE users (
   role_id INTEGER NOT NULL,
   FOREIGN KEY (role_id) REFERENCES Roles(id)
 );
-
 
 CREATE TABLE candidates (
   user_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -59,7 +60,7 @@ VALUES
   (1, 'admin'),
   (2, 'consultant'),
   (3, 'recruiter'),
-  (4, 'candidate') 
+  (4, 'candidate')
 INSERT INTO
   users (email, password, role_id)
 VALUES

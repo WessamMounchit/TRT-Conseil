@@ -2,7 +2,7 @@ import { useState } from "react";
 import { removeApplication } from "../../api/candidates";
 import { toast } from "react-toastify";
 import { AiOutlineCaretDown } from "react-icons/ai";
-import { IoIosRemoveCircleOutline } from "react-icons/Io";
+import { IoIosRemoveCircleOutline } from "react-icons/io";
 import { AiFillCaretUp } from "react-icons/ai";
 
 const ListOfJobApplied = ({ jobApplied, refreshData }) => {

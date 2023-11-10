@@ -15,9 +15,9 @@ exports.register = async (req, res) => {
     );
 
     const id = result.rows[0].id;
-    if (role === 3) {
+    if (role == 3) {
       await db.query("INSERT INTO recruiters (user_id) VALUES ($1)", [id]);
-    } else if (role === 4) {
+    } else if (role == 4) {
       await db.query("INSERT INTO candidates (user_id) VALUES ($1)", [id]);
     }
 
@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
   };
 
   try {
-    const token = sign(payload, SECRET, { expiresIn: '2h' });
+    const token = sign(payload, SECRET, { expiresIn: "2h" });
 
     return res.status(200).json({
       success: true,

@@ -1,1 +1,0 @@
-export const apiBaseUrl = 'https://trt-conseil.onrender.com';
