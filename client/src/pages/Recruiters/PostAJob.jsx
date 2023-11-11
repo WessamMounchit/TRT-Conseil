@@ -2,8 +2,10 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { createJobOffer } from "../../api/recruiters";
 import { BsFillSendCheckFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 export default function PostAJob() {
+  const navigate = useNavigate()
   const [loading, setloading] = useState(false);
   const [inputs, setInputs] = useState({
     jobTitle: "",
@@ -29,6 +31,7 @@ export default function PostAJob() {
 
       toast.success(response.data.message);
       setloading(false);
+      navigate("/")
     } catch (error) {
       setloading(false);
       console.error(error.message);

@@ -10,7 +10,7 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <Router>
-      <ToastContainer />
+      <ToastContainer position="bottom-center" autoClose={3000} />
       <App />
     </Router>
   </Provider>

@@ -2,8 +2,10 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { completeRecruiterProfile } from "../../api/recruiters";
 import { AiFillSave } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 export default function CompleteRecruiterProfile() {
+  const navigate = useNavigate()
   const [loading, setloading] = useState(false);
   const [inputs, setInputs] = useState({
     companyName: "",
@@ -29,6 +31,7 @@ export default function CompleteRecruiterProfile() {
 
       toast.success(response.data.message);
       setloading(false);
+      navigate("/")
     } catch (error) {
       setloading(false);
       console.error(error.message);

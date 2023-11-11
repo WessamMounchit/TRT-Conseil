@@ -5,8 +5,10 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { MdAddBox } from "react-icons/md";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 export default function AddConsultant() {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setloading] = useState(false);
   const [inputs, setInputs] = useState({
@@ -28,6 +30,7 @@ export default function AddConsultant() {
 
       toast.success(response.data.message);
       setloading(false);
+      navigate("/")
     } catch (error) {
       setloading(false);
       console.error(error.message);

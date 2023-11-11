@@ -2,11 +2,12 @@ import { register } from "../api/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { IoIosCreate } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillEyeInvisible } from "react-icons/ai";
 import { AiFillEye } from "react-icons/ai";
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
@@ -29,6 +30,7 @@ export default function SignUp() {
 
       toast.success(response.data.message);
       setLoading(false);
+      navigate("/")
     } catch (error) {
       setLoading(false);
       console.error(error.message);
