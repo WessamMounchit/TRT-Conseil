@@ -262,7 +262,12 @@ exports.deleteUser = async (req, res) => {
     if (result.rows.length > 0) {
       const { cv } = result.rows[0];
 
-      cv && fs.unlinkSync(cv);
+      try {
+        fs.unlink(cv);
+        console.log(`Le CV (${cv}) a été supprimé.`);
+      } catch (error) {
+        console.error(`Erreur lors de la suppression du CV (${cv}):`, error);
+      }
     }
 
     const query = "DELETE FROM users WHERE id = $1";

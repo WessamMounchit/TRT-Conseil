@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-import fetchData from "../../utils/fetchData";
-import {
-  ApproveJob,
-  UnapproveJob,
-  deleteJob,
-  getJobPostings,
-} from "../../api/consultants";
+import { useState } from "react";
+import { ApproveJob, UnapproveJob, deleteJob } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
 import { AiFillCaretUp } from "react-icons/ai";
@@ -13,18 +7,8 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfJobs = () => {
-  const [jobPostings, setJobPostings] = useState({
-    loading: false,
-    error: false,
-    data: [],
-  });
-
+const ListOfJobs = ({ jobPostings, refreshData }) => {
   const [openJobsList, setOpenJobsList] = useState(false);
-
-  useEffect(() => {
-    fetchData(setJobPostings, getJobPostings);
-  }, []);
 
   const handleJobActivation = async (jobId) => {
     try {
@@ -34,7 +18,7 @@ const ListOfJobs = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setJobPostings, getJobPostings);
+    refreshData();
   };
 
   const handleJobDesactivation = async (jobId) => {
@@ -45,7 +29,7 @@ const ListOfJobs = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setJobPostings, getJobPostings);
+    refreshData();
   };
 
   const handleJobDeletion = async (jobId) => {
@@ -56,7 +40,7 @@ const ListOfJobs = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setJobPostings, getJobPostings);
+    refreshData();
   };
 
   let contentDesktop;

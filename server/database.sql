@@ -40,7 +40,7 @@ CREATE TABLE job_postings (
   description TEXT,
   consultant_id uuid DEFAULT NULL,
   is_valid BOOLEAN DEFAULT false,
-  FOREIGN KEY (recruiter_id) REFERENCES recruiters(user_id),
+  FOREIGN KEY (recruiter_id) REFERENCES recruiters(user_id) ON DELETE CASCADE,
   FOREIGN KEY (consultant_id) REFERENCES users(id)
 );
 
@@ -50,8 +50,8 @@ CREATE TABLE applications (
   job_posting_id INTEGER,
   consultant_id uuid DEFAULT NULL,
   is_valid BOOLEAN DEFAULT false,
-  FOREIGN KEY (candidate_id) REFERENCES candidates(user_id),
-  FOREIGN KEY (job_posting_id) REFERENCES job_Postings(id),
+  FOREIGN KEY (candidate_id) REFERENCES candidates(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (job_posting_id) REFERENCES job_Postings(id) ON DELETE CASCADE,
   FOREIGN KEY (consultant_id) REFERENCES users(id)
 )
 INSERT INTO

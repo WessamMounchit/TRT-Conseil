@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import fetchData from "../../utils/fetchData";
+import { useState } from "react";
 import {
   ApproveApplication,
   UnapproveApplication,
   deleteApplication,
-  getApplications,
 } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -13,18 +11,8 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfApplications = () => {
-  const [applications, setApplications] = useState({
-    loading: false,
-    error: false,
-    data: [],
-  });
-
+const ListOfApplications = ({ applications, refreshData }) => {
   const [openApplicationsList, setOpenApplicationsList] = useState(false);
-
-  useEffect(() => {
-    fetchData(setApplications, getApplications);
-  }, []);
 
   const handleApplicationsActivation = async (applicationsId) => {
     try {
@@ -34,7 +22,7 @@ const ListOfApplications = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    refreshData();
   };
 
   const handleApplicationsDesactivation = async (applicationsId) => {
@@ -45,7 +33,7 @@ const ListOfApplications = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    refreshData();
   };
 
   const handleApplicationsDeletion = async (applicationsId) => {
@@ -56,7 +44,7 @@ const ListOfApplications = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setApplications, getApplications);
+    refreshData();
   };
 
   let contentDesktop;

@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import fetchData from "../../utils/fetchData";
+import { useState } from "react";
 import {
   activeCandidateAccount,
   desactiveCandidateAccount,
   deleteAccount,
-  getCandidates,
 } from "../../api/consultants";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiOutlineCaretDown } from "react-icons/ai";
@@ -13,18 +11,9 @@ import { BsHourglassSplit } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-const ListOfCandidates = () => {
-  const [candidates, setCandidates] = useState({
-    loading: false,
-    error: false,
-    data: [],
-  });
+const ListOfCandidates = ({candidates, refreshData}) => {
 
   const [openCandidatesList, setOpenCandidatesList] = useState(false);
-
-  useEffect(() => {
-    fetchData(setCandidates, getCandidates);
-  }, []);
 
   const handleCandidateActivation = async (accountId) => {
     try {
@@ -34,7 +23,7 @@ const ListOfCandidates = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setCandidates, getCandidates);
+    refreshData()
   };
 
   const handleCandidateDesactivation = async (accountId) => {
@@ -45,7 +34,7 @@ const ListOfCandidates = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setCandidates, getCandidates);
+    refreshData()
   };
 
   const handleCandidateDeletion = async (accountId) => {
@@ -56,7 +45,7 @@ const ListOfCandidates = () => {
       toast.error(error.response.data.error);
     }
 
-    fetchData(setCandidates, getCandidates);
+    refreshData()
   };
 
   let contentDesktop;
