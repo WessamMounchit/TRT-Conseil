@@ -1,11 +1,18 @@
 const passport = require("passport");
-const { Strategy, ExtractJwt } = require("passport-jwt");
+const { Strategy } = require("passport-jwt");
 const { SECRET } = require("../constants");
 const db = require("../db");
 
+
+const cookieExtractor = function (req) {
+  let token = null
+  if (req && req.cookies) token = req.cookies['token']
+  return token
+}
+
 const opts = {
   secretOrKey: SECRET,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: cookieExtractor,
 };
 
 passport.use(

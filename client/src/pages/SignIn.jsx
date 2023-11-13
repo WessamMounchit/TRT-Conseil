@@ -30,10 +30,9 @@ const SignIn = () => {
 
     try {
       const response = await login({ email, password });
-      const { role, userEmail, token } = response.data;
+      const { role, userEmail } = response.data;
 
-      dispatch(authenticateUser({ role, email: userEmail }));
-      secureLocalStorage.setItem("token", token);
+      dispatch(authenticateUser());
       secureLocalStorage.setItem("isAuth", "true");
       secureLocalStorage.setItem("email", userEmail);
       secureLocalStorage.setItem("role", role);

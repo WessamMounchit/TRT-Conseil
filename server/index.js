@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const { PORT, CLIENT_URL } = require("./constants");
+const cookieParser = require('cookie-parser');
 const passport = require("passport");
 const cors = require("cors");
 const multer = require("multer");
@@ -8,6 +9,7 @@ const path = require("path");
 
 //INITIALIZE MIDDLEWARES
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(passport.initialize());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

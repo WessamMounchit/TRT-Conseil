@@ -45,13 +45,19 @@ exports.login = async (req, res) => {
   try {
     const token = sign(payload, SECRET, { expiresIn: "2h" });
 
-    return res.status(200).json({
-      success: true,
-      message: "Connexion réalisée avec succès",
-      userEmail: user.email,
-      role: user.role_id,
-      token,
-    });
+    return res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .json({
+        success: true,
+        message: "Connexion réalisée avec succès",
+        userEmail: user.email,
+        role: user.role_id,
+      });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({
