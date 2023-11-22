@@ -10,10 +10,9 @@ export default function CompleteRecruiterProfile() {
   const [inputs, setInputs] = useState({
     companyName: "",
     address: "",
-    description: "",
   });
 
-  const { companyName, address, description } = inputs;
+  const { companyName, address } = inputs;
 
   const onChange = (e) =>
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -26,7 +25,6 @@ export default function CompleteRecruiterProfile() {
       const response = await completeRecruiterProfile({
         companyName,
         address,
-        description,
       });
 
       toast.success(response.data.message);
@@ -66,15 +64,6 @@ export default function CompleteRecruiterProfile() {
         name="address"
         placeholder="Adresse"
         className="input input-bordered w-80 sm:w-[32rem]"
-      />
-      <textarea
-        required
-        className="textarea textarea-bordered w-80 sm:w-[32rem]"
-        placeholder="Description"
-        id="description"
-        name="description"
-        value={description}
-        onChange={(e) => onChange(e)}
       />
       <button className="btn btn-primary mt-5 w-80 sm:w-[32rem]">
         Enregistrer

@@ -10,7 +10,7 @@ CREATE TABLE roles (
 CREATE TABLE users (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   email VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
+  password CHAR(60) NOT NULL,
   role_id INTEGER NOT NULL,
   FOREIGN KEY (role_id) REFERENCES Roles(id)
 );
